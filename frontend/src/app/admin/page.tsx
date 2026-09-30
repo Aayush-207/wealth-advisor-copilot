@@ -1,13 +1,18 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 
 export default function AdminApprovals() {
-  const pendingApprovals = [
-    { id: 'PUB-992', title: 'Q4 Wealth Management Strategy', submitter: 'John D.', submitted: '2 hours ago', risk: 'Medium' },
-    { id: 'PUB-993', title: 'Update to ISA Fee Structure', submitter: 'Alice M.', submitted: '5 hours ago', risk: 'High' },
-  ];
+  const [approvals, setApprovals] = useState([
+    { id: 'PUB-992', title: 'Q4 Wealth Management Strategy', submitter: 'John D.', submitted: '2 hours ago', risk: 'Medium', metadata: { category: 'Strategy', validUntil: '2026-12-31' }, status: 'Pending' },
+    { id: 'PUB-993', title: 'Update to ISA Fee Structure', submitter: 'Alice M.', submitted: '5 hours ago', risk: 'High', metadata: { category: 'Fees', validUntil: '2027-04-05' }, status: 'Pending' },
+    { id: 'PUB-994', title: 'Capital Gains Tax FAQ', submitter: 'Tax Dept', submitted: '1 day ago', risk: 'Low', metadata: { category: 'Tax', validUntil: '2027-03-31' }, status: 'Active' },
+  ]);
+
+  const handleAction = (id: string, action: string) => {
+    setApprovals(approvals.map(a => a.id === id ? { ...a, status: action } : a));
+  };
 
   return (
     <main className="min-h-screen bg-slate-900 text-slate-100 p-8 md:p-24 pb-32">
@@ -16,39 +21,27 @@ export default function AdminApprovals() {
         <header className="flex justify-between items-end border-b border-slate-700/50 pb-6">
           <div>
             <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white mb-2">
-              Approval Controls
+              Document Administration
             </h1>
-            <p className="text-slate-400 text-lg">Review and authorise document versions before they enter the RAG pipeline.</p>
+            <p className="text-slate-400 text-lg">Manage metadata, independent approvals, and document withdrawals.</p>
           </div>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
-          <div className="bg-slate-800/50 border border-slate-700/50 p-6 rounded-2xl">
-            <h3 className="text-slate-400 text-sm uppercase tracking-wider mb-2">Pending Review</h3>
-            <p className="text-4xl font-bold text-blue-400">12</p>
-          </div>
-          <div className="bg-slate-800/50 border border-slate-700/50 p-6 rounded-2xl">
-            <h3 className="text-slate-400 text-sm uppercase tracking-wider mb-2">Quarantined</h3>
-            <p className="text-4xl font-bold text-orange-400">3</p>
-          </div>
-          <div className="bg-slate-800/50 border border-slate-700/50 p-6 rounded-2xl">
-            <h3 className="text-slate-400 text-sm uppercase tracking-wider mb-2">Published Today</h3>
-            <p className="text-4xl font-bold text-teal-400">8</p>
-          </div>
-        </div>
-
-        <h2 className="text-2xl font-bold text-slate-200 mt-4">Needs Approval</h2>
+        <h2 className="text-2xl font-bold text-slate-200 mt-4">Document Queue & Controls</h2>
         
         <div className="flex flex-col gap-4">
-          {pendingApprovals.map((item, i) => (
+          {approvals.map((item, i) => (
             <motion.div 
               key={item.id}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
-              className="bg-slate-800/40 border border-slate-700/50 rounded-xl p-6 flex flex-col md:flex-row justify-between items-center gap-4 hover:bg-slate-800/60 transition-colors"
+              className={`border rounded-xl p-6 flex flex-col md:flex-row justify-between items-center gap-4 transition-colors ${
+                item.status === 'Withdrawn' ? 'bg-slate-900/40 border-slate-800 opacity-50' :
+                item.status === 'Active' ? 'bg-slate-800/40 border-teal-500/30' : 'bg-slate-800/40 border-slate-700/50'
+              }`}
             >
-              <div>
+              <div className="flex-1 w-full">
                 <div className="flex items-center gap-3 mb-2">
                   <span className="text-sm font-mono text-slate-400">{item.id}</span>
                   <span className={`px-2 py-0.5 rounded text-xs font-bold ${
@@ -56,17 +49,35 @@ export default function AdminApprovals() {
                   }`}>
                     {item.risk} Risk
                   </span>
+                  <span className={`px-2 py-0.5 rounded text-xs font-bold ${
+                    item.status === 'Pending' ? 'bg-blue-500/20 text-blue-400' :
+                    item.status === 'Active' ? 'bg-teal-500/20 text-teal-400' : 'bg-red-500/20 text-red-400'
+                  }`}>
+                    {item.status}
+                  </span>
                 </div>
                 <h3 className="text-xl font-bold text-slate-200">{item.title}</h3>
-                <p className="text-sm text-slate-400 mt-1">Submitted by {item.submitter} • {item.submitted}</p>
+                <div className="text-sm text-slate-400 mt-1 flex gap-4">
+                  <span>Owner: {item.submitter}</span>
+                  <span>Category: {item.metadata.category}</span>
+                  <span>Valid Until: {item.metadata.validUntil}</span>
+                </div>
               </div>
-              <div className="flex gap-3 w-full md:w-auto">
-                <button className="flex-1 md:flex-none px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg transition-colors text-sm font-semibold border border-slate-600 hover:border-slate-500">
-                  Inspect Diff
+              
+              <div className="flex flex-wrap gap-3 w-full md:w-auto justify-end">
+                <button className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg transition-colors text-sm font-semibold border border-slate-600">
+                  Edit Metadata
                 </button>
-                <button className="flex-1 md:flex-none px-4 py-2 bg-teal-500 hover:bg-teal-400 text-slate-900 rounded-lg transition-colors text-sm font-bold shadow-lg shadow-teal-500/20">
-                  Approve
-                </button>
+                {item.status === 'Pending' && (
+                  <button onClick={() => handleAction(item.id, 'Active')} className="px-4 py-2 bg-teal-500 hover:bg-teal-400 text-slate-900 rounded-lg transition-colors text-sm font-bold shadow-lg shadow-teal-500/20">
+                    Independent Approval
+                  </button>
+                )}
+                {item.status === 'Active' && (
+                  <button onClick={() => handleAction(item.id, 'Withdrawn')} className="px-4 py-2 bg-red-500/20 border border-red-500/30 hover:bg-red-500/30 text-red-400 rounded-lg transition-colors text-sm font-bold shadow-lg shadow-red-500/10">
+                    Withdraw
+                  </button>
+                )}
               </div>
             </motion.div>
           ))}

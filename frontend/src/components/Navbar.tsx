@@ -14,10 +14,15 @@ export default function Navbar() {
             <Link href="/" className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-teal-300">
               Wealth Copilot
             </Link>
-            <div className="hidden md:flex gap-4">
-              <Link href="/" className="text-slate-300 hover:text-white transition-colors">Assistant</Link>
+            <div className="hidden md:flex gap-4 text-sm font-medium">
+              <Link href="/" className="text-slate-300 hover:text-white transition-colors">Chat</Link>
+              <Link href="/history" className="text-slate-300 hover:text-white transition-colors">History</Link>
               <Link href="/documents" className="text-slate-300 hover:text-white transition-colors">Library</Link>
               <Link href="/admin" className="text-slate-300 hover:text-white transition-colors">Approvals</Link>
+              <Link href="/escalations" className="text-slate-300 hover:text-white transition-colors flex items-center gap-1">
+                Escalations
+                <span className="bg-red-500/20 text-red-400 text-[10px] px-1.5 py-0.5 rounded-full">2</span>
+              </Link>
             </div>
           </div>
           <div className="flex items-center gap-4">
