@@ -3,6 +3,7 @@
 import React, { useEffect, useRef } from 'react';
 import SearchBox from '../components/SearchBox';
 import Answer from '../components/Answer';
+import ComparisonTable from '../components/ComparisonTable';
 import { motion } from 'framer-motion';
 import gsap from 'gsap';
 
@@ -17,7 +18,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-slate-900 text-slate-100 flex flex-col items-center justify-start p-8 md:p-24 selection:bg-blue-500 selection:text-white">
+    <main className="min-h-screen bg-slate-900 text-slate-100 flex flex-col items-center justify-start p-8 md:p-24 selection:bg-blue-500 selection:text-white pb-32">
       <div className="w-full max-w-4xl flex flex-col gap-8">
         
         <header ref={headerRef} className="flex flex-col items-center text-center gap-4">
@@ -44,18 +45,42 @@ export default function Home() {
           initial={{ y: 30, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.6 }}
-          className="w-full mt-8"
+          className="w-full mt-8 sticky top-24 z-40"
         >
           <SearchBox />
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8, duration: 0.6 }}
-        >
-          <Answer text="Example answer derived from governed documents." citations={[{text: "Approved Policy 2026, Section 4.2"}]} />
-        </motion.div>
+        <div className="flex flex-col gap-6 mt-4">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8, duration: 0.6 }}
+          >
+            <Answer 
+              text="Based on the Income-tax Act, 2025, the sale of equity mutual funds is subject to long-term capital gains tax if held for over 12 months. Please verify the client's tax residency." 
+              citations={[{text: "Income Tax Department FAQs 2026", date: "April 2026 - Present"}]} 
+            />
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.0, duration: 0.6 }}
+          >
+            <Answer 
+              needsContext={true}
+              text="To determine the exact fee structure for the 'Global Equity Fund', I need the specific share class and jurisdiction. Are you referring to Class A or Class I shares?" 
+              citations={[]} 
+            />
+          </motion.div>
+          
+          <ComparisonTable 
+            data={[
+              { product: "Global Equity Fund (Class A)", fee: "1.50%", risk: "High" },
+              { product: "Stable Income Bond Fund", fee: "0.45%", risk: "Low" }
+            ]} 
+          />
+        </div>
       </div>
     </main>
   );
