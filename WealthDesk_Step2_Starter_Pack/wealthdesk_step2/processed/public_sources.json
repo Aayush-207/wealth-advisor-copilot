@@ -1,0 +1,38 @@
+[
+  {
+    "document_key": "ref_sbi_gold",
+    "title": "Source note SBI Gold Fund KIM",
+    "url": "https://www.sebi.gov.in/sebi_data/mutualfundfile/dec-2024/1734411405282.pdf",
+    "publication_date": "2024-11-29",
+    "locator": "PDF pages 1, 2, 4",
+    "bank_approval": "pending",
+    "original_included": false
+  },
+  {
+    "document_key": "ref_hdfc_elss",
+    "title": "Source note HDFC ELSS Tax Saver KIM",
+    "url": "https://files.hdfcfund.com/s3fs-public/KIM/2025-11/KIM%20-%20HDFC%20ELSS%20Tax%20Saver%20dated%20November%2021%2C%202025_0.pdf",
+    "publication_date": "2025-11-21",
+    "locator": "PDF pages 1, 2, 15, 20",
+    "bank_approval": "pending",
+    "original_included": false
+  },
+  {
+    "document_key": "ref_tax_transition",
+    "title": "Source note Income Tax Act transition FAQs",
+    "url": "https://www.incometax.gov.in/iec/foportal/help/all-topics/e-filing-services/objective-and-scope-new-act-faq",
+    "publication_date": null,
+    "locator": "FAQ questions 9, 17, 21",
+    "bank_approval": "pending",
+    "original_included": false
+  },
+  {
+    "document_key": "ref_sebi_ia",
+    "title": "Source note SEBI investment adviser AI guidance",
+    "url": "https://www.sebi.gov.in/sebi_data/attachdocs/feb-2026/1770375291405.pdf",
+    "publication_date": "2026-02-06",
+    "locator": "Printed pages 20\u201321",
+    "bank_approval": "pending",
+    "original_included": false
+  }
+]

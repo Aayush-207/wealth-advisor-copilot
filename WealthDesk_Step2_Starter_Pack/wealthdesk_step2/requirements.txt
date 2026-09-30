@@ -1,0 +1,3 @@
+# Core preparation, dry runs, offline search and REST import use Python's standard library.
+# Only needed when extracting original PDFs with fetch_original.py:
+pypdf>=5,<7
