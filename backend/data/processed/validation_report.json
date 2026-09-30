@@ -1,0 +1,16 @@
+{
+  "documents": 12,
+  "authored_demo_documents": 8,
+  "public_source_notes": 4,
+  "citation_ready_chunks": 32,
+  "offline_tests_passed": 7,
+  "original_downloads_verified": [
+    "ref_sbi_gold",
+    "ref_hdfc_elss"
+  ],
+  "originals_in_archive": false,
+  "embeddings_generated": false,
+  "supabase_remote_execution": false,
+  "gemini_remote_execution": false,
+  "production_approved_documents": 0
+}
