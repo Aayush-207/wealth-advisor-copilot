@@ -1,5 +1,0 @@
-.env
-.venv/
-__pycache__/
-staging/
-processed/embeddings.jsonl
