@@ -80,72 +80,67 @@ export default function Home() {
       {/* Background ambient glow when empty */}
       {conversation.length === 0 && (
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-          <motion.div 
-            animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.15, 0.1] }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-emerald-900/20 rounded-full blur-[100px]"
-          />
-          <motion.div 
-            animate={{ scale: [1, 1.3, 1], opacity: [0.05, 0.1, 0.05] }}
-            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-            className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-blue-900/10 rounded-full blur-[120px]"
-          />
+          <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[850px] h-[450px] bg-gradient-to-b from-primary-container/15 via-secondary-container/10 to-transparent blur-3xl rounded-full"></div>
+          <div className="absolute bottom-24 -right-24 w-96 h-96 bg-primary-container/5 blur-3xl rounded-full"></div>
         </div>
       )}
 
       {/* Scrollable Chat Area */}
       <div className="flex-1 overflow-y-auto px-4 md:px-8 pt-8 pb-32 z-10" ref={scrollRef}>
-        <div className="max-w-4xl mx-auto flex flex-col gap-8">
+        <div className="max-w-6xl mx-auto flex flex-col gap-8 w-full">
           
           {conversation.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full mt-24">
-              <motion.div 
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-                className="w-16 h-16 bg-zinc-900 border border-zinc-800 rounded-2xl flex items-center justify-center mb-6 shadow-xl relative"
-              >
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-zinc-800/20 to-zinc-500/10 blur-sm pointer-events-none"></div>
-                <svg className="w-8 h-8 text-zinc-300 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-                </svg>
-              </motion.div>
-              <motion.h1 
-                initial={{ y: 10, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.1, duration: 0.5 }}
-                className="text-3xl font-semibold text-zinc-100 mb-3"
-              >
-                How can I help you today?
-              </motion.h1>
-              <motion.p 
-                initial={{ y: 10, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.2, duration: 0.5 }}
-                className="text-zinc-500 text-sm max-w-md text-center mb-10"
-              >
-                Ask complex investment policy, tax guidance, and product questions. Grounded strictly in approved material.
-              </motion.p>
+            <div className="flex flex-col items-center text-center pt-space-lg w-full">
+              <div className="relative flex items-center justify-center mb-space-md group cursor-pointer">
+                <div className="absolute -inset-4 bg-gradient-to-r from-primary-container/20 to-secondary/25 rounded-full blur-xl animate-pulse"></div>
+                <div className="relative w-20 h-20 rounded-full bg-surface-container-lowest/80 backdrop-blur-xl flex items-center justify-center shadow-xl">
+                  <svg className="absolute inset-0 w-full h-full animate-[spin_12s_linear_infinite]" viewBox="0 0 100 100">
+                    <circle className="text-primary-container/60" cx="50" cy="50" fill="none" r="46" stroke="currentColor" strokeDasharray="8 14" strokeWidth="1.5"></circle>
+                    <circle className="text-secondary/40" cx="50" cy="50" fill="none" r="38" stroke="currentColor" strokeDasharray="4 8" strokeWidth="1"></circle>
+                  </svg>
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-surface-container-high to-surface-container-lowest flex items-center justify-center shadow-inner relative overflow-hidden">
+                    <div className="absolute inset-0 bg-primary-container/10 animate-ping opacity-30"></div>
+                    <div className="flex items-end gap-1 h-5 z-10 px-1">
+                      <span className="w-1 bg-primary-container rounded-full h-2 animate-[pulse_1s_ease-in-out_infinite]"></span>
+                      <span className="w-1 bg-primary rounded-full h-4 animate-[pulse_1.4s_ease-in-out_infinite_200ms]"></span>
+                      <span className="w-1 bg-secondary rounded-full h-5 animate-[pulse_1.2s_ease-in-out_infinite_400ms]"></span>
+                      <span className="w-1 bg-primary-container rounded-full h-3 animate-[pulse_0.9s_ease-in-out_infinite_100ms]"></span>
+                      <span className="w-1 bg-primary rounded-full h-2 animate-[pulse_1.3s_ease-in-out_infinite_300ms]"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h1 className="font-headline-xl text-headline-xl text-transparent bg-clip-text bg-gradient-to-b from-on-surface via-on-surface to-on-surface-variant max-w-4xl tracking-tight mb-space-sm font-bold">How can I help you today?</h1>
+              <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl text-balance">Ask complex investment policy, tax guidance, and product questions. Grounded strictly in approved material.</p>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-3xl">
-                {suggestions.map((item, idx) => (
-                  <motion.button
-                    key={idx}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 + (idx * 0.1) }}
-                    onClick={() => handleSearch(item.text)}
-                    className="flex flex-col items-start p-4 bg-zinc-900/50 hover:bg-zinc-800/80 border border-zinc-800 hover:border-zinc-700 rounded-2xl text-left transition-all group"
-                  >
-                    <span className="text-zinc-300 font-medium text-sm mb-2 flex items-center justify-between w-full">
-                      {item.title}
-                      <svg className="w-4 h-4 text-zinc-600 group-hover:text-zinc-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                      </svg>
-                    </span>
-                    <span className="text-zinc-500 text-xs line-clamp-2">{item.text}</span>
-                  </motion.button>
-                ))}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-space-md my-space-lg w-full mt-12">
+                {suggestions.map((item, idx) => {
+                  const colors = [
+                    { border: 'from-primary-container via-primary', glow: 'bg-primary-container', textHover: 'group-hover:text-primary', btn: 'group-hover:bg-primary-container group-hover:text-on-primary-container' },
+                    { border: 'from-secondary via-secondary-fixed-dim', glow: 'bg-secondary', textHover: 'group-hover:text-secondary', btn: 'group-hover:bg-secondary group-hover:text-on-secondary' },
+                    { border: 'from-primary via-primary-container', glow: 'bg-primary', textHover: 'group-hover:text-primary', btn: 'group-hover:bg-primary group-hover:text-on-primary' }
+                  ];
+                  const color = colors[idx % 3];
+                  return (
+                    <div
+                      key={idx}
+                      onClick={() => handleSearch(item.text)}
+                      className="group relative rounded-xl bg-surface-container-lowest/80 backdrop-blur-xl p-space-md flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:bg-surface-container-low/90 shadow-lg cursor-pointer overflow-hidden min-h-[160px] text-left"
+                    >
+                      <div className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${color.border} to-transparent opacity-0 group-hover:opacity-100 transition-opacity`}></div>
+                      <div className={`absolute -right-8 -bottom-8 w-24 h-24 ${color.glow}/10 rounded-full blur-xl group-hover:${color.glow}/20 transition-all`}></div>
+                      <div>
+                        <h2 className={`font-headline-sm text-headline-sm text-on-surface font-semibold mb-space-xs ${color.textHover} transition-colors`}>{item.title}</h2>
+                        <p className="font-body-sm text-body-sm text-on-surface-variant">{item.text}</p>
+                      </div>
+                      <div className="flex items-center justify-end mt-space-lg pt-space-xs text-on-surface-variant group-hover:text-on-surface">
+                        <div className={`w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center ${color.btn} transition-all`}>
+                          <span className="material-symbols-outlined text-base">arrow_forward</span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           ) : (

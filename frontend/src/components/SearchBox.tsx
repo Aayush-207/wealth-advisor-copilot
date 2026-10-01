@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useState, KeyboardEvent, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, KeyboardEvent } from 'react';
 
 interface SearchBoxProps {
   onSearch: (query: string) => void;
@@ -16,7 +15,6 @@ export default function SearchBox({ onSearch, isLoading }: SearchBoxProps) {
   const handleSearch = () => {
     if (!query.trim() || isLoading) return;
     
-    // Add to history if it's not the same as the last query
     if (history.length === 0 || history[history.length - 1] !== query) {
       setHistory(prev => [...prev, query]);
     }
@@ -52,39 +50,47 @@ export default function SearchBox({ onSearch, isLoading }: SearchBoxProps) {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-4 pb-6">
-      <div className="relative flex items-center bg-zinc-900 border border-zinc-800 focus-within:border-zinc-700 focus-within:bg-zinc-800/80 rounded-2xl p-2 shadow-sm transition-all duration-300">
-        <input 
-          type="text" 
-          value={query}
-          onChange={(e) => {
-            setQuery(e.target.value);
-            setHistoryIndex(-1); // reset history nav if user types
-          }}
-          onKeyDown={handleKeyDown}
-          placeholder="Ask a question about tax guidance, policies..." 
-          className="w-full bg-transparent text-zinc-200 placeholder-zinc-500 px-4 py-3 outline-none text-[15px]"
-          disabled={isLoading}
-          autoComplete="off"
-        />
-        <button 
-          onClick={handleSearch}
-          disabled={isLoading || !query.trim()}
-          className={`ml-2 p-3 rounded-xl transition-all flex items-center justify-center ${
-            isLoading ? 'text-zinc-500' : query.trim() ? 'bg-zinc-200 text-zinc-900 hover:bg-white' : 'text-zinc-600 bg-zinc-800'
-          }`}
-        >
-          {isLoading ? (
-            <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-          ) : (
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-            </svg>
-          )}
-        </button>
+    <div className="w-full max-w-4xl mx-auto flex flex-col items-center">
+      <div className="w-full relative rounded-2xl bg-surface-container-lowest/90 backdrop-blur-2xl p-space-sm shadow-2xl transition-all border border-surface-container/40">
+        <div className="flex items-center justify-between gap-space-sm">
+          <div className="flex-1 px-space-md relative">
+            <input 
+              type="text" 
+              value={query}
+              onChange={(e) => {
+                setQuery(e.target.value);
+                setHistoryIndex(-1); 
+              }}
+              onKeyDown={handleKeyDown}
+              placeholder={isLoading ? "Processing mandate..." : "Ask a question about tax guidance, policies..."} 
+              className="w-full bg-transparent border-0 outline-none text-on-surface font-body-md text-body-md placeholder:text-on-surface-variant/60 py-2.5"
+              disabled={isLoading}
+              autoComplete="off"
+            />
+          </div>
+          <div className="flex items-center gap-space-sm pr-1">
+            <button 
+              onClick={handleSearch}
+              disabled={isLoading || !query.trim()}
+              className={`h-10 w-10 rounded-xl flex items-center justify-center transition-all ${
+                isLoading 
+                  ? 'bg-surface-container-high text-on-surface-variant'
+                  : query.trim() 
+                    ? 'bg-gradient-to-r from-primary-container to-primary-fixed-dim text-on-primary shadow-md shadow-primary-container/20 hover:opacity-95 hover:scale-[1.02] active:scale-[0.98]'
+                    : 'bg-surface-container-high text-on-surface-variant'
+              }`}
+            >
+              {isLoading ? (
+                <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+              ) : (
+                <span className="material-symbols-outlined text-base font-bold">arrow_upward</span>
+              )}
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

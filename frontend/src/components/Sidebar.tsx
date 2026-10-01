@@ -8,63 +8,41 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   const navItems = [
-    { name: 'Chat', href: '/', icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-      </svg>
-    )},
-    { name: 'History', href: '/history', icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-    )},
-    { name: 'Library', href: '/documents', icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-      </svg>
-    )},
-    { name: 'Approvals', href: '/admin', icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-      </svg>
-    )},
-    { name: 'Escalations', href: '/escalations', icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-      </svg>
-    )}
+    { name: 'Chat', href: '/', icon: 'forum' },
+    { name: 'History', href: '/history', icon: 'history' },
+    { name: 'Library', href: '/documents', icon: 'menu_book' },
+    { name: 'Approvals', href: '/admin', icon: 'verified_user' },
+    { name: 'Escalations', href: '/escalations', icon: 'warning' }
   ];
 
   return (
-    <aside className="w-64 h-full bg-zinc-950 border-r border-zinc-800 flex flex-col justify-between shrink-0">
-      
-      <div>
-        <div className="p-6">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-zinc-100 text-zinc-900 rounded-lg flex items-center justify-center">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-              </svg>
-            </div>
-            <span className="text-lg font-bold text-zinc-100 tracking-tight">Wealth Copilot</span>
-          </Link>
+    <aside className="fixed left-0 top-0 h-full w-72 bg-surface-container-lowest/80 backdrop-blur-2xl z-50 flex flex-col justify-between p-space-md shadow-[0_1px_8px_rgba(0,0,0,0.04)] shrink-0">
+      <div className="flex flex-col gap-space-lg">
+        <div className="flex items-center gap-space-sm px-space-sm pt-space-xs">
+          <img alt="Wealth Copilot Emblem" className="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1W9Pluiv1XSuEQU_skjlo80vkLWJK1-v7BblXMdXf8rLw5kWPeoOjksyJMfWHI-DzaiBace47fMXMc9L-BjB77OkRRtw-txcgxGLmyxdrSBi6pYufdMSbdJtX4dintv-__a9OJQ4atPerEZRmkGbgRpBwNDewsCrdtGB64TbGA4Z2X0saN_E8mbPM2aesexNH6ldwAj8I5FITrlwwbyGEcc_fZNZCTLxdkvEX3bTPuNhcUw1ItRMoB5vBi1"/>
+          <div className="flex flex-col">
+            <span className="font-headline-sm text-headline-sm tracking-tight text-on-surface font-bold">Wealth Copilot</span>
+            <span className="font-label-xs text-label-xs text-primary tracking-widest uppercase">Private Wealth Enclave</span>
+          </div>
         </div>
 
-        <nav className="flex flex-col gap-1 px-3 mt-4">
+        <nav className="flex flex-col gap-space-xs">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
             return (
               <Link 
                 key={item.name} 
                 href={item.href}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                  isActive ? 'bg-zinc-800/80 text-zinc-100' : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900'
-                }`}
+                className={isActive 
+                  ? "flex items-center justify-between px-space-md py-space-sm rounded-lg transition-all bg-surface-container text-primary font-medium shadow-[0_1px_8px_rgba(0,0,0,0.04)]" 
+                  : "flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all"}
               >
-                {item.icon}
-                {item.name}
+                <div className="flex items-center gap-space-md">
+                  <span className="material-symbols-outlined text-base">{item.icon}</span>
+                  <span className="font-body-md text-body-md">{item.name}</span>
+                </div>
                 {item.name === 'Escalations' && (
-                  <span className="ml-auto bg-amber-500/10 text-amber-500 text-[10px] px-1.5 py-0.5 rounded-full font-bold">2</span>
+                  <span className="font-label-xs text-label-xs bg-secondary-container/40 text-secondary px-2 py-0.5 rounded-full font-semibold">2</span>
                 )}
               </Link>
             )
@@ -72,18 +50,21 @@ export default function Sidebar() {
         </nav>
       </div>
 
-      <div className="p-4 border-t border-zinc-800">
-        <div className="flex items-center gap-3 px-3 py-2">
-          <div className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-xs font-bold text-zinc-300">
-            RM
+      <div className="bg-surface-container/70 rounded-xl p-space-md flex items-center justify-between shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
+        <div className="flex items-center gap-space-sm">
+          <div className="relative">
+            <img alt="Sarah Williams" className="w-9 h-9 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1UUu22fWgFQ2q3c1VK9KEaYStSTuR10oSYOvp4Vk86q67XfZYqFAVO2PjZrG7DpMBg--hwJd9_XznyqhADR6q-zX9r3J8pDqVNGTvvhFH1FTfB-jBEwXdS8Tzq2LKMxJ9EGwiQw3YcRvISVFInWpXklwTuS1yR-fTNVbUl1lXt1duEd09_dphzcxIbU3X9pQic5307SPT8und9UNCAmwWp-0OAx3GSHxCW-BOnuIJGcBbHORhu7ziu8lLk"/>
+            <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-primary-container ring-2 ring-surface-container"></span>
           </div>
-          <div>
-            <p className="text-sm font-medium text-zinc-200">Sarah Williams</p>
-            <p className="text-xs text-zinc-500">Relationship Manager</p>
+          <div className="flex flex-col">
+            <span className="font-body-sm text-body-sm font-semibold text-on-surface">Sarah Williams</span>
+            <span className="font-label-xs text-label-xs text-on-surface-variant">Relationship Manager</span>
           </div>
         </div>
+        <button className="text-on-surface-variant hover:text-on-surface transition-colors p-1">
+          <span className="material-symbols-outlined text-base">tune</span>
+        </button>
       </div>
-
     </aside>
   );
 }
