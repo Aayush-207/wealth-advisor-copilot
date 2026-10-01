@@ -184,7 +184,7 @@ export default function Home() {
       </div>
 
       {/* Fixed Bottom Input */}
-      <div className="absolute bottom-0 w-full bg-gradient-to-t from-zinc-950 via-zinc-950 to-transparent pt-10 pb-6 px-4">
+      <div className="absolute bottom-0 w-full bg-gradient-to-t from-zinc-950 via-zinc-950 to-transparent pt-10 pb-6 px-4 z-20 pointer-events-auto">
         <SearchBox onSearch={handleSearch} isLoading={isLoading} />
         <p className="text-center text-[11px] text-zinc-600 mt-2">
           Responses are generated from approved bank materials. Verification by RM is still required for specific client contexts.
