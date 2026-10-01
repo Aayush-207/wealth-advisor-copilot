@@ -18,7 +18,7 @@ export default function ThinkingProcess() {
     if (currentStep < steps.length - 1) {
       const timer = setTimeout(() => {
         setCurrentStep(prev => prev + 1);
-      }, 700 + Math.random() * 800); // Random duration between 0.7s and 1.5s
+      }, 1500 + Math.random() * 1000); // Random duration between 1.5s and 2.5s
       return () => clearTimeout(timer);
     }
   }, [currentStep, steps.length]);
