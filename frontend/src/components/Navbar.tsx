@@ -1,11 +1,9 @@
 "use client";
 
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 
 export default function Navbar() {
-  const [role, setRole] = useState("RM");
-
   return (
     <nav className="w-full bg-slate-800/80 backdrop-blur-md border-b border-slate-700/50 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -27,15 +25,9 @@ export default function Navbar() {
           </div>
           <div className="flex items-center gap-4">
             <span className="text-sm text-slate-400">Current Role:</span>
-            <select 
-              value={role} 
-              onChange={(e) => setRole(e.target.value)}
-              className="bg-slate-900 border border-slate-700 text-slate-200 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 outline-none cursor-pointer"
-            >
-              <option value="RM">Relationship Manager</option>
-              <option value="Specialist">Product Specialist</option>
-              <option value="Admin">Compliance/Admin</option>
-            </select>
+            <div className="bg-slate-900 border border-slate-700 text-slate-200 text-sm rounded-lg px-3 py-2 font-medium">
+              Relationship Manager
+            </div>
           </div>
         </div>
       </div>
