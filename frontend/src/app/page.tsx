@@ -36,14 +36,14 @@ export default function Home() {
       if (lowerQuery.includes('capital gains') || lowerQuery.includes('mutual funds')) {
         newAnswers.push({
           type: 'answer',
-          text: "Based on the Income-tax Act, 2025, the sale of equity mutual funds is subject to long-term capital gains tax if held for over 12 months. Please verify the client's tax residency.",
+          text: "Based on the recent updates to the Income-tax Act, 2025, the sale of equity mutual funds is subject to Long-Term Capital Gains (LTCG) tax if the units have been held for a period exceeding 12 months. Currently, the LTCG tax rate is set at 12.5% for gains exceeding ₹1.25 lakh in a financial year.\n\nFor short-term holdings (less than 12 months), the Short-Term Capital Gains (STCG) tax rate applies at 20%.\n\nPlease ensure you verify the client's current tax residency and any grandfathering clauses that may apply to investments made prior to 2018.",
           citations: [{text: "Income Tax Department FAQs 2026", date: "April 2026 - Present"}],
           needsContext: false
         });
       } else if (lowerQuery.includes('fee') && lowerQuery.includes('equity fund')) {
         newAnswers.push({
           type: 'answer',
-          text: "To determine the exact fee structure for the 'Global Equity Fund', I need the specific share class and jurisdiction. Are you referring to Class A or Class I shares?",
+          text: "To determine the exact fee structure for the 'Global Equity Fund', I need the specific share class and jurisdiction. \n\nDifferent share classes bear different management fee ratios and ongoing charges figures (OCF). For example, Class A shares are typically intended for retail investors, whereas Class I shares are strictly for institutional clients and have a lower fee structure.\n\nAre you referring to Class A or Class I shares?",
           citations: [],
           needsContext: true
         });

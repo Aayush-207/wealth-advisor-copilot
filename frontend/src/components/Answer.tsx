@@ -20,17 +20,18 @@ export default function Answer({ text, citations, needsContext = false }: { text
           </div>
         )}
 
-        <div className="text-[15px] leading-relaxed text-zinc-300">
+        <div className="text-[15px] leading-relaxed text-zinc-300 whitespace-pre-wrap">
           {text}
         </div>
 
         {!needsContext && (
           <div className="flex justify-end mt-1">
             <button 
-              onClick={() => setEscalated(true)}
-              className={`text-[11px] px-2 py-1 rounded transition-colors ${escalated ? 'text-red-400 bg-red-400/10 cursor-default' : 'text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800'}`}
+              onClick={() => setEscalated(!escalated)}
+              className={`text-[11px] px-2 py-1 rounded transition-colors ${escalated ? 'text-red-400 bg-red-400/10 hover:bg-red-400/20' : 'text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800'}`}
+              title={escalated ? "Click to undo" : ""}
             >
-              {escalated ? 'Escalated to Specialist' : 'Flag Issue'}
+              {escalated ? 'Escalated to Specialist (Undo)' : 'Flag Issue'}
             </button>
           </div>
         )}

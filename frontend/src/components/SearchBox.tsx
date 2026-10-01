@@ -30,15 +30,15 @@ export default function SearchBox({ onSearch, isLoading }: SearchBoxProps) {
       e.preventDefault();
       handleSearch();
     } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      if (history.length > 0) {
+      if (history.length > 0 && (query === "" || historyIndex !== -1)) {
+        e.preventDefault();
         const nextIndex = historyIndex < 0 ? history.length - 1 : Math.max(0, historyIndex - 1);
         setHistoryIndex(nextIndex);
         setQuery(history[nextIndex]);
       }
     } else if (e.key === 'ArrowDown') {
-      e.preventDefault();
       if (historyIndex >= 0) {
+        e.preventDefault();
         const nextIndex = historyIndex + 1;
         if (nextIndex >= history.length) {
           setHistoryIndex(-1);
