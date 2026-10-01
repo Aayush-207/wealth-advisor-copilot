@@ -1,6 +1,6 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import Navbar from '../components/Navbar';
+import Sidebar from '../components/Sidebar';
 
 export const metadata: Metadata = {
   title: 'Wealth Advisor Copilot',
@@ -10,10 +10,13 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body>
-        <Navbar />
-        {children}
+      <body className="flex h-screen overflow-hidden bg-zinc-950">
+        <Sidebar />
+        <div className="flex-1 relative overflow-hidden bg-zinc-950">
+          {children}
+        </div>
       </body>
+
     </html>
   );
 }
