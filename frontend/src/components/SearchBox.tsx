@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, KeyboardEvent } from 'react';
+import React, { useState, KeyboardEvent, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 interface SearchBoxProps {
@@ -27,6 +27,7 @@ export default function SearchBox({ onSearch, isLoading }: SearchBoxProps) {
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
+      e.preventDefault();
       handleSearch();
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
@@ -51,38 +52,39 @@ export default function SearchBox({ onSearch, isLoading }: SearchBoxProps) {
   };
 
   return (
-    <div className="relative group w-full">
-      <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-teal-400 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
-      <div className="relative flex items-center bg-slate-800 rounded-2xl p-2 shadow-xl ring-1 ring-white/10">
+    <div className="w-full max-w-4xl mx-auto px-4 pb-6">
+      <div className="relative flex items-center bg-zinc-900 border border-zinc-800 focus-within:border-zinc-700 focus-within:bg-zinc-800/80 rounded-2xl p-2 shadow-sm transition-all duration-300">
         <input 
           type="text" 
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);
-            setHistoryIndex(-1);
+            setHistoryIndex(-1); // reset history nav if user types
           }}
           onKeyDown={handleKeyDown}
           placeholder="Ask a question about tax guidance, policies..." 
-          className="w-full bg-transparent text-slate-200 placeholder-slate-400 px-4 py-3 outline-none text-lg"
+          className="w-full bg-transparent text-zinc-200 placeholder-zinc-500 px-4 py-3 outline-none text-[15px]"
           disabled={isLoading}
+          autoComplete="off"
         />
-        <motion.button 
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+        <button 
           onClick={handleSearch}
-          disabled={isLoading}
-          className={`ml-2 text-white font-semibold px-6 py-3 rounded-xl shadow-md transition-all ${isLoading ? 'bg-slate-600 cursor-not-allowed' : 'bg-gradient-to-r from-blue-500 to-teal-500 hover:shadow-lg'}`}
+          disabled={isLoading || !query.trim()}
+          className={`ml-2 p-3 rounded-xl transition-all flex items-center justify-center ${
+            isLoading ? 'text-zinc-500' : query.trim() ? 'bg-zinc-200 text-zinc-900 hover:bg-white' : 'text-zinc-600 bg-zinc-800'
+          }`}
         >
           {isLoading ? (
-            <span className="flex items-center gap-2">
-              <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-              Thinking
-            </span>
-          ) : 'Ask'}
-        </motion.button>
+            <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          ) : (
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          )}
+        </button>
       </div>
     </div>
   );

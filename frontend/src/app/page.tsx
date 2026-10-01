@@ -1,54 +1,53 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import SearchBox from '../components/SearchBox';
 import Answer from '../components/Answer';
 import ComparisonTable from '../components/ComparisonTable';
 import { motion, AnimatePresence } from 'framer-motion';
-import gsap from 'gsap';
 
 export default function Home() {
-  const headerRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [currentAnswers, setCurrentAnswers] = useState<any[]>([]);
-  const [hasSearched, setHasSearched] = useState(false);
+  const [conversation, setConversation] = useState<any[]>([]);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
+  // Auto-scroll to bottom on new messages
   useEffect(() => {
-    gsap.fromTo(headerRef.current, 
-      { opacity: 0, y: -50 }, 
-      { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }
-    );
-  }, []);
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [conversation, isLoading]);
 
   const handleSearch = (query: string) => {
     setIsLoading(true);
-    setHasSearched(false);
     
-    // Simulate 5-6 second buffer
-    const waitTime = Math.floor(Math.random() * 1000) + 5000; 
+    // Append user query to conversation
+    setConversation(prev => [...prev, { role: 'user', content: query }]);
+    
+    // Simulate 2 second buffer instead of 5-6 to make it snappy but clear
+    const waitTime = Math.floor(Math.random() * 500) + 2000; 
 
     setTimeout(() => {
       setIsLoading(false);
-      setHasSearched(true);
       
       const lowerQuery = query.toLowerCase();
-      let answers = [];
+      let newAnswers = [];
 
       if (lowerQuery.includes('capital gains') || lowerQuery.includes('mutual funds')) {
-        answers.push({
+        newAnswers.push({
           type: 'answer',
           text: "Based on the Income-tax Act, 2025, the sale of equity mutual funds is subject to long-term capital gains tax if held for over 12 months. Please verify the client's tax residency.",
           citations: [{text: "Income Tax Department FAQs 2026", date: "April 2026 - Present"}],
           needsContext: false
         });
       } else if (lowerQuery.includes('fee') && lowerQuery.includes('equity fund')) {
-        answers.push({
+        newAnswers.push({
           type: 'answer',
           text: "To determine the exact fee structure for the 'Global Equity Fund', I need the specific share class and jurisdiction. Are you referring to Class A or Class I shares?",
           citations: [],
           needsContext: true
         });
-        answers.push({
+        newAnswers.push({
           type: 'table',
           data: [
             { product: "Global Equity Fund (Class A)", fee: "1.50%", risk: "High" },
@@ -56,7 +55,7 @@ export default function Home() {
           ]
         });
       } else {
-        answers.push({
+        newAnswers.push({
           type: 'answer',
           text: "I could not find specific information for your query in the approved bank material. Please try rephrasing or ask a different question.",
           citations: [],
@@ -64,78 +63,76 @@ export default function Home() {
         });
       }
 
-      setCurrentAnswers(answers);
+      setConversation(prev => [...prev, { role: 'ai', content: newAnswers }]);
     }, waitTime);
   };
 
   return (
-    <main className="min-h-screen bg-slate-900 text-slate-100 flex flex-col items-center justify-start p-8 md:p-24 selection:bg-blue-500 selection:text-white pb-32">
-      <div className="w-full max-w-4xl flex flex-col gap-8">
-        
-        <header ref={headerRef} className="flex flex-col items-center text-center gap-4">
-          <motion.div 
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.8, type: 'spring' }}
-            className="w-20 h-20 bg-gradient-to-tr from-blue-500 to-teal-400 rounded-2xl shadow-lg shadow-blue-500/20 flex items-center justify-center mb-4"
-          >
-            <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-            </svg>
-          </motion.div>
+    <main className="h-screen bg-zinc-950 text-zinc-100 flex flex-col selection:bg-zinc-800 selection:text-white">
+      
+      {/* Scrollable Chat Area */}
+      <div className="flex-1 overflow-y-auto px-4 md:px-8 pt-8 pb-32" ref={scrollRef}>
+        <div className="max-w-4xl mx-auto flex flex-col gap-8">
           
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-teal-300">
-            Wealth Advisor Copilot
-          </h1>
-          <p className="text-lg md:text-xl text-slate-400 max-w-2xl">
-            Ask complex investment policy, tax guidance, and product questions. Get answers grounded strictly in approved bank material.
-          </p>
-        </header>
-
-        <motion.div 
-          initial={{ y: 30, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.5, duration: 0.6 }}
-          className="w-full mt-8 sticky top-24 z-40"
-        >
-          <SearchBox onSearch={handleSearch} isLoading={isLoading} />
-        </motion.div>
-
-        <AnimatePresence>
-          {hasSearched && (
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className="flex flex-col gap-6 mt-4"
-            >
-              {currentAnswers.map((item, idx) => {
-                if (item.type === 'answer') {
-                  return (
-                    <motion.div
-                      key={idx}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.2 + (idx * 0.2), duration: 0.6 }}
-                    >
-                      <Answer 
-                        needsContext={item.needsContext}
-                        text={item.text} 
-                        citations={item.citations} 
-                      />
-                    </motion.div>
-                  );
-                } else if (item.type === 'table') {
-                  return (
-                    <ComparisonTable key={idx} data={item.data} />
-                  );
-                }
-                return null;
-              })}
+          {conversation.length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-full mt-32 opacity-80">
+              <div className="w-16 h-16 bg-zinc-900 border border-zinc-800 rounded-2xl flex items-center justify-center mb-6">
+                <svg className="w-8 h-8 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                </svg>
+              </div>
+              <h1 className="text-3xl font-semibold text-zinc-200 mb-3">How can I help you today?</h1>
+              <p className="text-zinc-500 text-sm max-w-md text-center">Ask complex investment policy, tax guidance, and product questions. Grounded strictly in approved material.</p>
+            </div>
+          ) : (
+            conversation.map((msg, i) => (
+              <motion.div 
+                key={i}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className={`flex w-full ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+              >
+                {msg.role === 'user' ? (
+                  <div className="bg-zinc-800 text-zinc-100 px-5 py-3 rounded-2xl max-w-[80%] md:max-w-[70%] leading-relaxed text-[15px]">
+                    {msg.content}
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-4 w-full max-w-[90%] md:max-w-[85%]">
+                    {msg.content.map((item: any, idx: number) => {
+                      if (item.type === 'answer') {
+                        return <Answer key={idx} needsContext={item.needsContext} text={item.text} citations={item.citations} />;
+                      } else if (item.type === 'table') {
+                        return <ComparisonTable key={idx} data={item.data} />;
+                      }
+                      return null;
+                    })}
+                  </div>
+                )}
+              </motion.div>
+            ))
+          )}
+          
+          {isLoading && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-start w-full">
+              <div className="flex gap-1 items-center bg-zinc-900/50 border border-zinc-800/50 px-4 py-3 rounded-2xl h-12">
+                <span className="w-1.5 h-1.5 bg-zinc-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
+                <span className="w-1.5 h-1.5 bg-zinc-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
+                <span className="w-1.5 h-1.5 bg-zinc-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
+              </div>
             </motion.div>
           )}
-        </AnimatePresence>
+
+        </div>
       </div>
+
+      {/* Fixed Bottom Input */}
+      <div className="absolute bottom-0 w-full bg-gradient-to-t from-zinc-950 via-zinc-950 to-transparent pt-10 pb-6 px-4">
+        <SearchBox onSearch={handleSearch} isLoading={isLoading} />
+        <p className="text-center text-[11px] text-zinc-600 mt-2">
+          Responses are generated from approved bank materials. Verification by RM is still required for specific client contexts.
+        </p>
+      </div>
+
     </main>
   );
 }
