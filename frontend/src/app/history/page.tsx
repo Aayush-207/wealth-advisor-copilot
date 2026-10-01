@@ -11,47 +11,45 @@ export default function HistoryDashboard() {
   ];
 
   return (
-    <main className="min-h-screen bg-slate-900 text-slate-100 p-8 md:p-24 pb-32">
+    <main className="h-screen overflow-y-auto bg-zinc-950 text-zinc-100 p-8 md:p-12">
       <div className="w-full max-w-5xl mx-auto flex flex-col gap-8">
         
-        <header className="flex justify-between items-end border-b border-slate-700/50 pb-6">
-          <div>
-            <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white mb-2">
-              Query History
-            </h1>
-            <p className="text-slate-400 text-lg">Review saved answers. Re-use queries are automatically checked against the latest documents.</p>
-          </div>
+        <header className="border-b border-zinc-800 pb-6 mt-4">
+          <h1 className="text-3xl font-semibold tracking-tight text-zinc-100 mb-2">
+            Query History
+          </h1>
+          <p className="text-zinc-500 text-sm">Review saved answers. Re-use queries are automatically checked against the latest documents.</p>
         </header>
 
-        <div className="flex flex-col gap-4 mt-4">
+        <div className="flex flex-col gap-4">
           {history.map((item, i) => (
             <motion.div 
               key={item.id}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
-              className="bg-slate-800/40 border border-slate-700/50 rounded-xl p-6 flex flex-col gap-3 hover:bg-slate-800/60 transition-colors"
+              className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 flex flex-col gap-3 hover:border-zinc-700 transition-colors"
             >
               <div className="flex justify-between items-start">
-                <h3 className="text-xl font-bold text-slate-200">"{item.query}"</h3>
-                <span className={`px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap ${
-                  item.status === 'Verified' ? 'bg-teal-500/20 text-teal-400' : 'bg-orange-500/20 text-orange-400 border border-orange-500/30'
+                <h3 className="text-[15px] font-medium text-zinc-200">"{item.query}"</h3>
+                <span className={`px-2.5 py-1 rounded-md text-[11px] font-medium whitespace-nowrap ${
+                  item.status === 'Verified' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
                 }`}>
                   {item.status}
                 </span>
               </div>
               
-              <p className="text-slate-400">{item.answerSnippet}</p>
+              <p className="text-sm text-zinc-400 leading-relaxed">{item.answerSnippet}</p>
               
-              <div className="flex flex-wrap items-center gap-4 mt-2 text-sm">
-                <span className="text-slate-500">{item.date}</span>
-                <span className="text-slate-500">•</span>
-                <span className="text-slate-400">
-                  Checked against: <span className={item.status === 'Verified' ? 'text-teal-400' : 'text-orange-400 line-through'}>{item.checkedAgainst}</span>
+              <div className="flex flex-wrap items-center gap-3 mt-1 text-xs">
+                <span className="text-zinc-600 font-medium">{item.date}</span>
+                <span className="text-zinc-700">•</span>
+                <span className="text-zinc-500">
+                  Checked against: <span className={item.status === 'Verified' ? 'text-zinc-400 font-medium' : 'text-amber-500 line-through'}>{item.checkedAgainst}</span>
                 </span>
                 {item.status !== 'Verified' && (
-                  <button className="ml-auto px-4 py-1.5 bg-blue-500 hover:bg-blue-400 text-white rounded-lg text-xs font-bold transition-colors">
-                    Re-verify Answer
+                  <button className="ml-auto px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-zinc-300 rounded-md transition-colors">
+                    Re-verify
                   </button>
                 )}
               </div>
