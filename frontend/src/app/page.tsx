@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import SearchBox from '../components/SearchBox';
 import Answer from '../components/Answer';
 import ComparisonTable from '../components/ComparisonTable';
+import ThinkingProcess from '../components/ThinkingProcess';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Home() {
@@ -24,8 +25,8 @@ export default function Home() {
     // Append user query to conversation
     setConversation(prev => [...prev, { role: 'user', content: query }]);
     
-    // Simulate 2 second buffer instead of 5-6 to make it snappy but clear
-    const waitTime = Math.floor(Math.random() * 500) + 2000; 
+    // Simulate 4.5 - 5.5 second buffer to allow thinking steps to play out
+    const waitTime = Math.floor(Math.random() * 1000) + 4500; 
 
     setTimeout(() => {
       setIsLoading(false);
@@ -113,13 +114,7 @@ export default function Home() {
           )}
           
           {isLoading && (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-start w-full">
-              <div className="flex gap-1 items-center bg-zinc-900/50 border border-zinc-800/50 px-4 py-3 rounded-2xl h-12">
-                <span className="w-1.5 h-1.5 bg-zinc-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
-                <span className="w-1.5 h-1.5 bg-zinc-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
-                <span className="w-1.5 h-1.5 bg-zinc-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
-              </div>
-            </motion.div>
+            <ThinkingProcess />
           )}
 
         </div>
