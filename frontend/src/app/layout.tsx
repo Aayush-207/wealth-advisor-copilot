@@ -18,7 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="flex h-screen overflow-hidden bg-background text-on-surface antialiased font-body-md">
         <Sidebar />
-        <div className="flex-1 relative overflow-hidden bg-surface">
+        <div className="flex-1 relative overflow-hidden bg-surface pl-72">
           {children}
         </div>
       </body>

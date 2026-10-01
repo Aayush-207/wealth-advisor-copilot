@@ -5,6 +5,7 @@ import SearchBox from '../components/SearchBox';
 import Answer from '../components/Answer';
 import ComparisonTable from '../components/ComparisonTable';
 import ThinkingProcess from '../components/ThinkingProcess';
+import ShaderBackground from '../components/ShaderBackground';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Home() {
@@ -75,11 +76,12 @@ export default function Home() {
   ];
 
   return (
-    <main className="h-screen bg-zinc-950 text-zinc-100 flex flex-col selection:bg-zinc-800 selection:text-white relative overflow-hidden">
+    <main className="h-screen bg-surface text-on-surface flex flex-col relative overflow-hidden">
       
       {/* Background ambient glow when empty */}
       {conversation.length === 0 && (
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+          <ShaderBackground />
           <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[850px] h-[450px] bg-gradient-to-b from-primary-container/15 via-secondary-container/10 to-transparent blur-3xl rounded-full"></div>
           <div className="absolute bottom-24 -right-24 w-96 h-96 bg-primary-container/5 blur-3xl rounded-full"></div>
         </div>
