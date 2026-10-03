@@ -387,7 +387,7 @@ export default function Home() {
                 <button
                   key={p.title}
                   onClick={() => submit(p.text)}
-                  className="group relative flex flex-col items-start p-6 rounded-2xl bg-white/70 backdrop-blur-md border-2 border-transparent text-left w-full h-full transition-all duration-400 hover:scale-[1.02] hover:border-[#6356a4] hover:shadow-[0_12px_40px_-12px_rgba(99,86,164,0.3)]"
+                  className="group relative flex flex-col items-start p-6 rounded-2xl bg-white/70 backdrop-blur-md border-2 border-[#a898c5]/40 text-left w-full h-full transition-all duration-400 hover:scale-[1.02] hover:border-[#6356a4] hover:shadow-[0_12px_40px_-12px_rgba(99,86,164,0.3)]"
                 >
                   <span className="text-[10px] font-bold uppercase tracking-widest mb-3 text-[#656874] group-hover:text-[#6356a4] transition-colors duration-300">
                     {p.title}
