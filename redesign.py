@@ -1,4 +1,6 @@
-"use client";
+import sys
+
+new_content = '''"use client";
 import { useState } from "react";
 import Link from "next/link";
 import { documents, type Citation } from "@/lib/knowledge";
@@ -31,7 +33,7 @@ export default function Library() {
     .filter(
       (d) =>
         (filter === "All documents" || d.category === filter) &&
-        `${d.title} ${d.issuer} ${d.summary}`
+        ${d.title}  
           .toLowerCase()
           .includes(search.toLowerCase()),
     )
@@ -106,15 +108,11 @@ export default function Library() {
                 <button
                   key={c}
                   onClick={() => setFilter(c)}
-                  className={`whitespace-nowrap px-4 py-2 rounded-lg text-xs font-medium transition-all flex items-center gap-2 border ${
-                    filter === c 
-                      ? "bg-[#2d3546] text-white border-[#2d3546] shadow-md" 
-                      : "bg-white text-gray-600 border-gray-200 hover:bg-gray-50"
-                  }`}
+                  className={whitespace-nowrap px-4 py-2 rounded-lg text-xs font-medium transition-all flex items-center gap-2 border }
                 >
                   {c}
                   {c === "All documents" && (
-                    <span className={`px-1.5 py-0.5 rounded-full text-[9px] ${filter === c ? "bg-white/20 text-white" : "bg-gray-100 text-gray-500"}`}>
+                    <span className={px-1.5 py-0.5 rounded-full text-[9px] }>
                       {documents.length}
                     </span>
                   )}
@@ -141,7 +139,7 @@ export default function Library() {
             {filtered.length} Document{filtered.length === 1 ? "" : "s"} found
           </span>
           <span className="text-[9px] font-bold tracking-[1.5px] text-gray-400 uppercase hidden sm:block">
-            Public Reference &middot; Bank Review Pending
+            Public Reference · Bank Review Pending
           </span>
         </div>
 
@@ -154,7 +152,7 @@ export default function Library() {
                 <article
                   key={d.id}
                   className="group bg-white border border-gray-200/60 rounded-2xl p-6 flex flex-col h-full shadow-sm hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden"
-                  style={{ animation: `fadeIn 0.5s ease-out forwards`, animationDelay: `${i * 50}ms`, opacity: 0 }}
+                  style={{ animation: adeIn 0.5s ease-out forwards, animationDelay: ${i * 50}ms, opacity: 0 }}
                 >
                   {/* Decorative corner accent */}
                   <div className="absolute -top-10 -right-10 w-24 h-24 bg-gray-50 rounded-full group-hover:scale-150 transition-transform duration-500 z-0"></div>
@@ -164,7 +162,7 @@ export default function Library() {
                       <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 group-hover:text-purple-600 group-hover:bg-purple-50 transition-colors">
                         <Icon name="file" size={20} />
                       </div>
-                      <span className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border ${colorClass}`}>
+                      <span className={px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border }>
                         {d.category}
                       </span>
                     </div>
@@ -196,7 +194,7 @@ export default function Library() {
                     <div className="pt-4 border-t border-gray-100 flex items-center justify-between mt-auto">
                       <div className="flex flex-col">
                         <span className="text-gray-900 font-semibold text-xs">{d.date}</span>
-                        <span className="text-gray-400 text-[10px] uppercase tracking-wider mt-0.5">{d.pages} pages &middot; PDF</span>
+                        <span className="text-gray-400 text-[10px] uppercase tracking-wider mt-0.5">{d.pages} pages · PDF</span>
                       </div>
                       
                       <div className="flex gap-2">
@@ -218,7 +216,7 @@ export default function Library() {
                           href={d.file}
                           download
                           className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-600 hover:bg-gray-200 transition-colors"
-                          title={`Download ${d.title}`}
+                          title={Download }
                         >
                           <Icon name="download" size={14} />
                         </a>
@@ -266,7 +264,7 @@ export default function Library() {
         onClose={() => setCitation(null)}
       />
       
-      <style jsx global>{`
+      <style jsx global>{
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(10px); }
           to { opacity: 1; transform: translateY(0); }
@@ -278,7 +276,13 @@ export default function Library() {
           -ms-overflow-style: none;
           scrollbar-width: none;
         }
-      `}</style>
+      }</style>
     </div>
   );
 }
+'''
+
+with open('frontend/src/app/documents/page.tsx', 'w', encoding='utf-8') as f:
+    f.write(new_content)
+
+print("Redesign applied successfully.")
