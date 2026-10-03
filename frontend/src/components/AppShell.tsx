@@ -189,7 +189,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           <div className="topbar-right">
             <span className="offline-pill">
               <span />
-              No live AI · Saved responses
+              Saved responses
             </span>
             <span className="top-avatar">SW</span>
           </div>

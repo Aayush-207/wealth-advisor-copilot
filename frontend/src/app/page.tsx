@@ -380,6 +380,16 @@ export default function Home() {
                 <br />
                 Your next client conversation, better informed.
               </p>
+              <div style={{ margin: "2rem 0" }}>
+                <Composer
+                  input={input}
+                  setInput={setInput}
+                  textarea={textarea}
+                  submit={submit}
+                  loading={loading}
+                  stop={stop}
+                />
+              </div>
               <div className="hero-detail">
                 <span className="stacked-docs">
                   <Icon name="file" size={15} />
@@ -398,14 +408,6 @@ export default function Home() {
                 <span>WHAT’S ON YOUR MIND?</span>
                 <span>01 — ASK</span>
               </div>
-              <Composer
-                input={input}
-                setInput={setInput}
-                textarea={textarea}
-                submit={submit}
-                loading={loading}
-                stop={stop}
-              />
               <div className="suggestion-heading">
                 <span>A few places to begin</span>
                 <span>YOUR ORIGINAL QUESTIONS</span>
