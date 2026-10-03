@@ -1,62 +1,138 @@
 "use client";
-
-import React from 'react';
-import { motion } from 'framer-motion';
-
-export default function HistoryDashboard() {
-  const history = [
-    { id: 'QA-112', query: 'What is the capital gains tax for equity mutual funds?', answerSnippet: 'Based on the Income-tax Act, 2025, the sale of equity...', date: '2026-09-30 14:22', status: 'Verified', checkedAgainst: 'Income Tax Department FAQs 2026' },
-    { id: 'QA-113', query: 'Can I transfer an ISA without losing tax wrapper?', answerSnippet: 'Yes, provided the transfer is done directly between providers...', date: '2026-09-29 09:15', status: 'Re-verification Needed', checkedAgainst: 'ISA Transfer Policy v4 (Superseded)' },
-    { id: 'QA-114', query: 'Fee structure for Global Equity Fund Class A', answerSnippet: 'The management fee is 1.50%...', date: '2026-09-28 16:45', status: 'Verified', checkedAgainst: 'Global Equity Fund Factsheet' },
-  ];
-
+import { useState } from "react";
+import Link from "next/link";
+import Icon from "@/components/Icon";
+import PageHeading from "@/components/PageHeading";
+import { useStored, type SavedQuery } from "@/lib/storage";
+const examples: SavedQuery[] = [
+  {
+    id: "QA-112",
+    query: "What is the capital gains tax for equity mutual funds?",
+    date: "2026-09-30T14:22:00Z",
+    responseId: "tax",
+  },
+  {
+    id: "QA-113",
+    query: "Can I transfer an ISA without losing tax wrapper?",
+    date: "2026-09-29T09:15:00Z",
+    responseId: "unknown",
+  },
+  {
+    id: "QA-114",
+    query: "Fee structure for Global Equity Fund Class A",
+    date: "2026-09-28T16:45:00Z",
+    responseId: "fees",
+  },
+];
+export default function History() {
+  const [saved] = useStored<SavedQuery[]>("wealthdesk:history", []);
+  const [q, setQ] = useState("");
+  const all = [...saved, ...examples].filter((x) =>
+    x.query.toLowerCase().includes(q.toLowerCase()),
+  );
   return (
-    <main className="h-screen overflow-y-auto bg-zinc-950 text-zinc-100 p-8 md:p-12">
-      <div className="w-full max-w-5xl mx-auto flex flex-col gap-8">
-        
-        <header className="border-b border-zinc-800 pb-6 mt-4">
-          <h1 className="text-3xl font-semibold tracking-tight text-zinc-100 mb-2">
-            Query History
-          </h1>
-          <p className="text-zinc-500 text-sm">Review saved answers. Re-use queries are automatically checked against the latest documents.</p>
-        </header>
-
-        <div className="flex flex-col gap-4">
-          {history.map((item, i) => (
-            <motion.div 
-              key={item.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1 }}
-              className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 flex flex-col gap-3 hover:border-zinc-700 transition-colors"
-            >
-              <div className="flex justify-between items-start">
-                <h3 className="text-[15px] font-medium text-zinc-200">"{item.query}"</h3>
-                <span className={`px-2.5 py-1 rounded-md text-[11px] font-medium whitespace-nowrap ${
-                  item.status === 'Verified' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
-                }`}>
-                  {item.status}
-                </span>
-              </div>
-              
-              <p className="text-sm text-zinc-400 leading-relaxed">{item.answerSnippet}</p>
-              
-              <div className="flex flex-wrap items-center gap-3 mt-1 text-xs">
-                <span className="text-zinc-600 font-medium">{item.date}</span>
-                <span className="text-zinc-700">•</span>
-                <span className="text-zinc-500">
-                  Checked against: <span className={item.status === 'Verified' ? 'text-zinc-400 font-medium' : 'text-amber-500 line-through'}>{item.checkedAgainst}</span>
-                </span>
-                {item.status !== 'Verified' && (
-                  <button className="ml-auto px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-zinc-300 rounded-md transition-colors">
-                    Re-verify
-                  </button>
-                )}
-              </div>
-            </motion.div>
-          ))}
+    <div className="standard-page">
+      <PageHeading
+        eyebrow="PICK UP THE THREAD"
+        title="Considered"
+        italic="conversations."
+        description="Return to a question, revisit its sources, and keep the context close."
+        action={
+          <Link href="/?new=1" className="primary-button">
+            <Icon name="plus" size={16} />
+            New conversation
+          </Link>
+        }
+      />
+      <div className="stats-strip">
+        <div>
+          <strong>{saved.length.toString().padStart(2, "0")}</strong>
+          <span>Saved on this browser</span>
+        </div>
+        <div>
+          <strong>03</strong>
+          <span>Original example conversations</span>
+        </div>
+        <div className="stats-note">
+          <Icon name="history" size={24} />
+          <span>
+            Every conversation
+            <br />
+            has a place to return to.
+          </span>
         </div>
       </div>
-    </main>
+      <div className="search-field history-search">
+        <Icon name="search" size={18} />
+        <input
+          aria-label="Search conversations"
+          placeholder="Find a conversation…"
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+        />
+      </div>
+      <div className="section-label results-label">
+        <span>{all.length} CONVERSATIONS</span>
+        <span>OPEN TO REVISIT THE SAVED RESPONSE</span>
+      </div>
+      <div className="history-list">
+        {all.map((item) => (
+          <Link
+            href={`/?q=${encodeURIComponent(item.query)}`}
+            className="history-row"
+            key={item.id}
+          >
+            <span className="history-icon">
+              <Icon name="chat" size={21} />
+            </span>
+            <div>
+              <div className="history-meta">
+                <span>
+                  {item.id.startsWith("QA-")
+                    ? `${item.id} · EXAMPLE`
+                    : "SAVED LOCALLY"}
+                </span>
+                <span>
+                  {new Date(item.date).toLocaleDateString("en-GB", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                    timeZone: "UTC",
+                  })}
+                </span>
+              </div>
+              <h2>{item.query}</h2>
+              <p>
+                {item.responseId === "tax"
+                  ? "Tax framework, worked example and page-linked sources."
+                  : item.responseId === "fees"
+                    ? "Product identification and missing fee evidence."
+                    : "Outside the saved answer collection. Specialist context needed."}
+              </p>
+            </div>
+            <span className="pill neutral">
+              {item.responseId === "unknown"
+                ? "Needs context"
+                : "Saved response"}
+            </span>
+            <Icon name="arrow" size={19} />
+          </Link>
+        ))}
+      </div>
+      {!all.length && (
+        <div className="empty-state">
+          <Icon name="search" size={30} />
+          <h2>No matching conversations.</h2>
+          <button className="text-button" onClick={() => setQ("")}>
+            Clear search
+          </button>
+        </div>
+      )}
+      <p className="page-note">
+        New conversations are stored in this browser only. Opening a
+        conversation replays the hardcoded response; it does not re-check
+        current law.
+      </p>
+    </div>
   );
 }

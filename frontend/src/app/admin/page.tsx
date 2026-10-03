@@ -1,86 +1,180 @@
 "use client";
-
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-
-export default function AdminApprovals() {
-  const [approvals, setApprovals] = useState([
-    { id: 'PUB-992', title: 'Q4 Wealth Management Strategy', submitter: 'John D.', submitted: '2 hours ago', risk: 'Medium', metadata: { category: 'Strategy', validUntil: '2026-12-31' }, status: 'Pending' },
-    { id: 'PUB-993', title: 'Update to ISA Fee Structure', submitter: 'Alice M.', submitted: '5 hours ago', risk: 'High', metadata: { category: 'Fees', validUntil: '2027-04-05' }, status: 'Pending' },
-    { id: 'PUB-994', title: 'Capital Gains Tax FAQ', submitter: 'Tax Dept', submitted: '1 day ago', risk: 'Low', metadata: { category: 'Tax', validUntil: '2027-03-31' }, status: 'Active' },
-  ]);
-
-  const handleAction = (id: string, action: string) => {
-    setApprovals(approvals.map(a => a.id === id ? { ...a, status: action } : a));
-  };
-
+import { useState } from "react";
+import { documents, type Citation } from "@/lib/knowledge";
+import { useStored } from "@/lib/storage";
+import PageHeading from "@/components/PageHeading";
+import Icon from "@/components/Icon";
+import EvidenceDrawer from "@/components/EvidenceDrawer";
+type Review = { status: "Reviewed in demo" | "Needs follow-up"; note: string };
+export default function Admin() {
+  const [reviews, save] = useStored<Record<string, Review>>(
+    "wealthdesk:reviews",
+    {},
+  );
+  const [selected, setSelected] = useState<string | null>(null);
+  const [note, setNote] = useState("");
+  const [error, setError] = useState("");
+  const [filter, setFilter] = useState("All");
+  const [citation, setCitation] = useState<Citation | null>(null);
+  const reviewed = Object.values(reviews).filter(
+    (r) => r.status === "Reviewed in demo",
+  ).length;
+  function update(status: Review["status"]) {
+    if (!selected || !note.trim()) return;
+    if (save({ ...reviews, [selected]: { status, note: note.trim() } })) {
+      setSelected(null);
+      setNote("");
+      setError("");
+    } else
+      setError(
+        "Browser storage is unavailable. Your review could not be saved.",
+      );
+  }
   return (
-    <main className="h-screen overflow-y-auto bg-zinc-950 text-zinc-100 p-8 md:p-12">
-      <div className="w-full max-w-5xl mx-auto flex flex-col gap-8">
-        
-        <header className="border-b border-zinc-800 pb-6 mt-4">
-          <h1 className="text-3xl font-semibold tracking-tight text-zinc-100 mb-2">
-            Document Administration
-          </h1>
-          <p className="text-zinc-500 text-sm">Manage metadata, independent approvals, and document withdrawals.</p>
-        </header>
-
-        <h2 className="text-lg font-medium text-zinc-300 mt-2">Document Queue & Controls</h2>
-        
-        <div className="flex flex-col gap-4">
-          {approvals.map((item, i) => (
-            <motion.div 
-              key={item.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1 }}
-              className={`border rounded-xl p-5 flex flex-col md:flex-row justify-between items-center gap-4 transition-colors ${
-                item.status === 'Withdrawn' ? 'bg-zinc-900/30 border-zinc-800 opacity-50' :
-                item.status === 'Active' ? 'bg-zinc-900 border-zinc-800' : 'bg-zinc-900 border-zinc-700'
-              }`}
-            >
-              <div className="flex-1 w-full">
-                <div className="flex items-center gap-3 mb-2">
-                  <span className="text-xs font-mono text-zinc-500">{item.id}</span>
-                  <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold ${
-                    item.risk === 'High' ? 'bg-red-500/10 text-red-400 border border-red-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
-                  }`}>
-                    {item.risk} Risk
-                  </span>
-                  <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold ${
-                    item.status === 'Pending' ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20' :
-                    item.status === 'Active' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-zinc-800 text-zinc-400 border border-zinc-700'
-                  }`}>
-                    {item.status}
-                  </span>
-                </div>
-                <h3 className="text-[15px] font-medium text-zinc-200">{item.title}</h3>
-                <div className="text-[12px] text-zinc-500 mt-1 flex flex-wrap gap-4">
-                  <span>Owner: <span className="text-zinc-400">{item.submitter}</span></span>
-                  <span>Category: <span className="text-zinc-400">{item.metadata.category}</span></span>
-                  <span>Valid Until: <span className="text-zinc-400">{item.metadata.validUntil}</span></span>
-                </div>
-              </div>
-              
-              <div className="flex flex-wrap gap-2 w-full md:w-auto justify-end">
-                <button className="px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-md transition-colors text-xs font-medium border border-zinc-700">
-                  Edit Metadata
-                </button>
-                {item.status === 'Pending' && (
-                  <button onClick={() => handleAction(item.id, 'Active')} className="px-3 py-1.5 bg-zinc-200 hover:bg-white text-zinc-900 rounded-md transition-colors text-xs font-semibold">
-                    Approve
-                  </button>
-                )}
-                {item.status === 'Active' && (
-                  <button onClick={() => handleAction(item.id, 'Withdrawn')} className="px-3 py-1.5 bg-zinc-900 border border-red-900 hover:bg-red-950 text-red-400 rounded-md transition-colors text-xs font-medium">
-                    Withdraw
-                  </button>
-                )}
-              </div>
-            </motion.div>
-          ))}
+    <div className="standard-page">
+      <PageHeading
+        eyebrow="GOVERNANCE / REFERENCE REVIEW"
+        title="A second"
+        italic="perspective."
+        description="Inspect the evidence and record what still needs attention."
+      />
+      <div className="stats-strip">
+        <div>
+          <strong>
+            {String(documents.length - reviewed).padStart(2, "0")}
+          </strong>
+          <span>Awaiting demo review</span>
+        </div>
+        <div>
+          <strong>{String(reviewed).padStart(2, "0")}</strong>
+          <span>Reviewed in this browser</span>
+        </div>
+        <div>
+          <strong>00</strong>
+          <span>Bank-approved documents</span>
         </div>
       </div>
-    </main>
+      <div className="notice governance-notice">
+        <Icon name="shield" size={21} />
+        <p>
+          <b>A practice review, not a publication workflow.</b> Status changes
+          stay on this browser. They do not approve documents for client use or
+          change the hardcoded answers.
+        </p>
+      </div>
+      <div className="filter-tabs">
+        {["All", "Pending", "Reviewed in demo", "Needs follow-up"].map((f) => (
+          <button
+            key={f}
+            aria-pressed={filter === f}
+            className={filter === f ? "selected" : ""}
+            onClick={() => setFilter(f)}
+          >
+            {f}
+          </button>
+        ))}
+      </div>
+      <div className="review-list">
+        {documents
+          .filter(
+            (d) =>
+              filter === "All" ||
+              (reviews[d.id]?.status || "Pending") === filter,
+          )
+          .map((d) => (
+            <article className="review-row" key={d.id}>
+              <div className="review-summary">
+                <span className="doc-icon">
+                  <Icon name="file" size={21} />
+                </span>
+                <div className="review-title">
+                  <span className="eyebrow">
+                    {d.issuer} / {d.date}
+                  </span>
+                  <h2>{d.shortTitle}</h2>
+                  <p>{reviews[d.id]?.note || d.note}</p>
+                </div>
+                <span
+                  className={`pill ${reviews[d.id]?.status === "Reviewed in demo" ? "green" : "amber"}`}
+                >
+                  {reviews[d.id]?.status || "Pending"}
+                </span>
+                <button
+                  className="secondary-button"
+                  onClick={() => {
+                    setSelected(selected === d.id ? null : d.id);
+                    setNote(reviews[d.id]?.note || "");
+                    setError("");
+                  }}
+                >
+                  Review
+                  <Icon name="chevron" size={14} />
+                </button>
+              </div>
+              {selected === d.id && (
+                <div className="review-editor">
+                  <button
+                    className="text-button"
+                    onClick={() =>
+                      setCitation({
+                        documentId: d.id,
+                        page: 1,
+                        section: "Review the original publication",
+                        summary: d.summary,
+                      })
+                    }
+                  >
+                    <Icon name="external" size={15} />
+                    Open the source before reviewing
+                  </button>
+                  <label htmlFor={`note-${d.id}`}>
+                    Review note <span>(required)</span>
+                  </label>
+                  <textarea
+                    id={`note-${d.id}`}
+                    value={note}
+                    maxLength={2000}
+                    onChange={(e) => setNote(e.target.value)}
+                    placeholder="Record version, scope, amendments to check, and any missing context…"
+                    rows={3}
+                  />
+                  <div className="review-editor-actions">
+                    <button
+                      className="secondary-button"
+                      disabled={!note.trim()}
+                      onClick={() => update("Needs follow-up")}
+                    >
+                      Needs follow-up
+                    </button>
+                    <button
+                      className="primary-button"
+                      disabled={!note.trim()}
+                      onClick={() => update("Reviewed in demo")}
+                    >
+                      <Icon name="check" size={16} />
+                      Save demo review
+                    </button>
+                  </div>
+                  {error && <p role="alert">{error}</p>}
+                </div>
+              )}
+            </article>
+          ))}
+      </div>
+      {!documents.some(
+        (d) =>
+          filter === "All" || (reviews[d.id]?.status || "Pending") === filter,
+      ) && (
+        <div className="empty-state">
+          <Icon name="shield" size={30} />
+          <h2>No documents in this review state.</h2>
+        </div>
+      )}
+      <EvidenceDrawer
+        key={citation?.documentId ?? "none"}
+        citation={citation}
+        onClose={() => setCitation(null)}
+      />
+    </div>
   );
 }

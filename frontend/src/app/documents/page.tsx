@@ -1,70 +1,212 @@
 "use client";
-
-import React from 'react';
-
-export default function DocumentLibrary() {
-  const documents = [
-    { id: 1, title: 'Global Equity Fund Factsheet', type: 'PDF', owner: 'Product Team', status: 'Active', updated: '2026-09-01' },
-    { id: 2, title: 'Income Tax Transition Rules 2026', type: 'PDF', owner: 'Tax Dept', status: 'Active', updated: '2026-08-15' },
-    { id: 3, title: 'ISA Transfer Policy v4', type: 'DOCX', owner: 'Compliance', status: 'Superseded', updated: '2025-11-20' },
-  ];
-
+import { useState } from "react";
+import Link from "next/link";
+import { documents, type Citation } from "@/lib/knowledge";
+import Icon from "@/components/Icon";
+import PageHeading from "@/components/PageHeading";
+import EvidenceDrawer from "@/components/EvidenceDrawer";
+const categories = [
+  "All documents",
+  "Taxation",
+  "Compliance",
+  "Investor protection",
+  "Operations",
+];
+export default function Library() {
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState("All documents");
+  const [sort, setSort] = useState("newest");
+  const [citation, setCitation] = useState<Citation | null>(null);
+  const filtered = documents
+    .filter(
+      (d) =>
+        (filter === "All documents" || d.category === filter) &&
+        `${d.title} ${d.issuer} ${d.summary}`
+          .toLowerCase()
+          .includes(search.toLowerCase()),
+    )
+    .sort((a, b) =>
+      sort === "name"
+        ? a.title.localeCompare(b.title)
+        : b.date.localeCompare(a.date),
+    );
   return (
-    <main className="h-screen overflow-y-auto bg-zinc-950 text-zinc-100 p-8 md:p-12">
-      <div className="w-full max-w-5xl mx-auto flex flex-col gap-8">
-        
-        <header className="border-b border-zinc-800 pb-6 mt-4 flex justify-between items-end">
-          <div>
-            <h1 className="text-3xl font-semibold tracking-tight text-zinc-100 mb-2">
-              Document Library
-            </h1>
-            <p className="text-zinc-500 text-sm">Browse, filter, and inspect approved bank materials.</p>
-          </div>
-          <div className="flex gap-3">
-            <input type="text" placeholder="Search title or ID..." className="bg-zinc-900 text-zinc-200 border border-zinc-800 rounded-md px-3 py-1.5 outline-none focus:border-zinc-700 text-sm transition-colors" />
-            <button className="bg-zinc-800 border border-zinc-700 hover:bg-zinc-700 px-3 py-1.5 rounded-md text-zinc-300 transition-colors text-sm font-medium">
-              Filter
-            </button>
-          </div>
-        </header>
-
-        <div className="w-full overflow-x-auto border border-zinc-800 rounded-xl bg-zinc-900">
-          <table className="w-full text-left text-sm text-zinc-300">
-            <thead className="bg-zinc-800/50 text-zinc-400 uppercase text-[10px] tracking-wider">
-              <tr>
-                <th className="px-6 py-3 font-medium">Title</th>
-                <th className="px-6 py-3 font-medium">Type</th>
-                <th className="px-6 py-3 font-medium">Owner</th>
-                <th className="px-6 py-3 font-medium">Status</th>
-                <th className="px-6 py-3 font-medium">Last Updated</th>
-                <th className="px-6 py-3 font-medium text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-zinc-800/50">
-              {documents.map((doc, i) => (
-                <tr key={doc.id} className="hover:bg-zinc-800/30 transition-colors">
-                  <td className="px-6 py-4 font-medium text-zinc-200">{doc.title}</td>
-                  <td className="px-6 py-4">
-                    <span className="bg-zinc-800 px-2 py-0.5 rounded text-[10px] font-mono text-zinc-400">{doc.type}</span>
-                  </td>
-                  <td className="px-6 py-4 text-zinc-400">{doc.owner}</td>
-                  <td className="px-6 py-4">
-                    <span className={`px-2 py-1 rounded text-[11px] font-bold ${
-                      doc.status === 'Active' ? 'text-emerald-400 bg-emerald-400/10' : 'text-amber-400 bg-amber-400/10'
-                    }`}>
-                      {doc.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-zinc-500 font-mono text-xs">{doc.updated}</td>
-                  <td className="px-6 py-4 text-right">
-                    <button className="text-zinc-400 hover:text-zinc-200 transition-colors text-xs font-medium">View Details</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+    <div className="standard-page">
+      <PageHeading
+        eyebrow="KNOWLEDGE, WITH PROVENANCE"
+        title="The document"
+        italic="library."
+        description="The original material. The full context. All in one place."
+        action={
+          <a
+            className="secondary-button"
+            href="/documents/provenance.json"
+            download
+          >
+            <Icon name="download" size={16} />
+            Source manifest
+          </a>
+        }
+      />
+      <div className="library-banner">
+        <div className="banner-icon">
+          <Icon name="book" size={28} />
+        </div>
+        <div>
+          <span className="eyebrow">THE INDIA REFERENCE COLLECTION</span>
+          <h2>Open the source. See the whole picture.</h2>
+          <p>
+            Official publications, preserved as dated snapshots. Review
+            applicability before client use.
+          </p>
+        </div>
+        <div className="banner-count">
+          <strong>{documents.length}</strong>
+          <span>REFERENCE PDFs</span>
         </div>
       </div>
-    </main>
+      <div className="library-controls">
+        <div className="search-field">
+          <Icon name="search" size={18} />
+          <input
+            aria-label="Search documents"
+            placeholder="Search a title, topic or publisher…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          {search && (
+            <button
+              className="icon-button"
+              aria-label="Clear document search"
+              onClick={() => setSearch("")}
+            >
+              <Icon name="close" size={14} />
+            </button>
+          )}
+        </div>
+        <label className="sort-select">
+          Sort by{" "}
+          <select
+            aria-label="Sort documents"
+            value={sort}
+            onChange={(e) => setSort(e.target.value)}
+          >
+            <option value="newest">Publication date</option>
+            <option value="name">Title A–Z</option>
+          </select>
+        </label>
+      </div>
+      <div className="filter-tabs" aria-label="Document categories">
+        {categories.map((c) => (
+          <button
+            key={c}
+            aria-pressed={filter === c}
+            className={filter === c ? "selected" : ""}
+            onClick={() => setFilter(c)}
+          >
+            {c}
+            {c === "All documents" && <span>{documents.length}</span>}
+          </button>
+        ))}
+      </div>
+      <div className="section-label results-label">
+        <span>
+          {filtered.length} DOCUMENT{filtered.length === 1 ? "" : "S"}
+        </span>
+        <span>PUBLIC REFERENCE · BANK REVIEW PENDING</span>
+      </div>
+      {filtered.length ? (
+        <div className="document-grid">
+          {filtered.map((d, i) => (
+            <article
+              className="library-card"
+              key={d.id}
+              style={{ animationDelay: `${Math.min(i, 5) * 45}ms` }}
+            >
+              <div className="library-card-top">
+                <span
+                  className={`doc-icon ${d.category === "Taxation" ? "tax" : ""}`}
+                >
+                  <Icon name="file" size={24} />
+                </span>
+                <span className="pill neutral">{d.category}</span>
+              </div>
+              <span className="document-issuer">{d.issuer}</span>
+              <h2>
+                <button
+                  onClick={() =>
+                    setCitation({
+                      documentId: d.id,
+                      page: 1,
+                      section: "Document overview",
+                      summary: d.summary,
+                    })
+                  }
+                >
+                  {d.shortTitle}
+                </button>
+              </h2>
+              <p>{d.summary}</p>
+              <div className="document-details">
+                <span>{d.date}</span>
+                <span>{d.pages} pages · PDF</span>
+              </div>
+              <div className="library-card-bottom">
+                <button
+                  className="text-button"
+                  onClick={() =>
+                    setCitation({
+                      documentId: d.id,
+                      page: 1,
+                      section: "Document overview",
+                      summary: d.summary,
+                    })
+                  }
+                >
+                  Read reference
+                  <Icon name="arrow" size={15} />
+                </button>
+                <a
+                  href={d.file}
+                  download
+                  className="icon-button"
+                  aria-label={`Download ${d.title}`}
+                >
+                  <Icon name="download" size={17} />
+                </a>
+              </div>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <div className="empty-state">
+          <Icon name="search" size={35} />
+          <h2>No documents found.</h2>
+          <p>Try a broader term or another category.</p>
+          <button
+            className="secondary-button"
+            onClick={() => {
+              setSearch("");
+              setFilter("All documents");
+            }}
+          >
+            Reset filters
+          </button>
+        </div>
+      )}
+      <div className="library-disclaimer">
+        <Icon name="shield" size={18} />
+        <p>
+          These are public regulatory and tax references, not an approved bank
+          policy set. Historical publications may have later amendments.{" "}
+          <Link href="/admin">Review the collection</Link>.
+        </p>
+      </div>
+      <EvidenceDrawer
+        key={citation?.documentId ?? "none"}
+        citation={citation}
+        onClose={() => setCitation(null)}
+      />
+    </div>
   );
 }

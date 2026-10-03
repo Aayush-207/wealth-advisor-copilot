@@ -1,26 +1,20 @@
-import './globals.css';
-import type { Metadata } from 'next';
-import Sidebar from '../components/Sidebar';
-
+import "./globals.css";
+import type { Metadata } from "next";
+import AppShell from "@/components/AppShell";
 export const metadata: Metadata = {
-  title: 'Wealth Advisor Copilot',
-  description: 'AI Assistant for Relationship Managers',
+  title: "Wealthdesk — The advisor’s companion",
+  description:
+    "A curated, source-linked wealth advisory workspace. Hardcoded demo responses, official reference PDFs, no live AI.",
 };
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
-      <head>
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
-        <link href="https://fonts.googleapis.com" rel="preconnect"/>
-        <link crossOrigin="anonymous" href="https://fonts.gstatic.com" rel="preconnect"/>
-        <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-      </head>
-      <body className="flex h-screen overflow-hidden bg-background text-on-surface antialiased font-body-md">
-        <Sidebar />
-        <div className="flex-1 relative overflow-hidden bg-surface pl-72">
-          {children}
-        </div>
+      <body>
+        <AppShell>{children}</AppShell>
       </body>
     </html>
   );
