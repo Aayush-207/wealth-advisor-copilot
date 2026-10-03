@@ -61,8 +61,20 @@ export default function InteractiveBackground() {
         
         {/* Subtle textural noise overlay for a premium matte paper feel */}
         <div 
-          className="absolute inset-0 opacity-[0.35] mix-blend-overlay"
+          className="absolute inset-0 opacity-[0.35] mix-blend-overlay z-10"
           style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }}
+        />
+
+        {/* Sweeping Curvy Lines Pattern */}
+        <div 
+          className="absolute inset-0 opacity-[0.5] mix-blend-multiply transition-transform duration-700 ease-out z-0"
+          style={{ 
+            backgroundImage: `
+              repeating-radial-gradient(circle at 0% 0%, transparent 0, transparent 40px, rgba(99, 86, 164, 0.15) 40px, rgba(99, 86, 164, 0.15) 41px),
+              repeating-radial-gradient(circle at 100% 100%, transparent 0, transparent 60px, rgba(99, 86, 164, 0.1) 60px, rgba(99, 86, 164, 0.1) 61px)
+            `,
+            transform: `translate(${mousePosition.x * -20}px, ${mousePosition.y * -20}px)`
+          }}
         />
       </div>
     </>
