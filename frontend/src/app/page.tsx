@@ -410,7 +410,7 @@ export default function Home() {
         </div>
         </>
       ) : (
-        <>
+        <div className="chat-transition relative z-10 w-full">
           <div className="conversation-header">
             <div>
               <span className="eyebrow">YOUR ADVISORY DESK</span>
@@ -520,7 +520,7 @@ export default function Home() {
               ))}
             </div>
           </div>
-        </>
+        </div>
       )}
       {localNotice && (
         <p className="notice" role="status">

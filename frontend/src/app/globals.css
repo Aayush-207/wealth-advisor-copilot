@@ -16,6 +16,11 @@
 html {
   scroll-behavior: smooth;
 }
+
+@keyframes slide-up-fade {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 body {
   margin: 0;
   background: var(--paper);
@@ -1579,30 +1584,41 @@ em {
 }
 .user-question {
   display: flex;
-  align-items: flex-start;
+  align-items: flex-end;
   gap: 14px;
   margin: 0 0 22px;
+  flex-direction: row-reverse;
 }
 .user-question .top-avatar {
-  margin-top: 3px;
+  margin-bottom: 2px;
 }
 .user-question .eyebrow {
-  font-size: 7px;
-  color: #9c909c;
+  display: none;
+}
+.user-question > div {
+  max-width: 80%;
+  background: var(--purple);
+  color: white;
+  padding: 16px 20px;
+  border-radius: 20px 20px 4px 20px;
+  box-shadow: 0 6px 20px rgba(99, 86, 164, 0.2);
 }
 .user-question p {
-  font-size: 15px;
-  line-height: 1.7;
-  margin-top: 7px;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+  color: white;
   overflow-wrap: anywhere;
 }
 .answer-card {
   border: 1px solid #e2dbe7;
-  border-radius: 8px;
+  border-radius: 6px 20px 20px 20px;
   background: #fffefa;
   box-shadow: 0 7px 25px #47364e04;
   overflow: hidden;
-  animation: page-in 0.45s;
+  max-width: 95%;
+  margin-right: auto;
+  animation: slide-up-fade 0.5s ease-out forwards;
 }
 .answer-top {
   padding: 16px 24px;
@@ -1859,9 +1875,11 @@ em {
   padding: 26px;
   background: #fffefa;
   border: 1px solid #e4dbe9;
-  border-radius: 8px;
+  border-radius: 6px 20px 20px 20px;
   min-height: 150px;
-  animation: page-in 0.3s;
+  max-width: 95%;
+  margin-right: auto;
+  animation: slide-up-fade 0.5s ease-out forwards;
 }
 .thinking-mark {
   width: 40px;
