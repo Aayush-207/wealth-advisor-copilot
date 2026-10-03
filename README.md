@@ -71,4 +71,4 @@ The system employs a strict Retrieval-Augmented Generation (RAG) architecture to
 2. **Response Formatting**: Gemini structures the response, often including markdown tables, bulleted summaries, and precise inline citations pointing back to the original documents.
 3. **Frontend Rendering**: The FastAPI backend sends the finalized response to the Next.js frontend, which beautifully maps the data into the `.answer-card` component, fully equipped with clickable source citations.
 
-*(Note: Hardcoded query strings, proprietary client datasets, and specific company financial records are strictly excluded from this repository codebase to ensure privacy and maintain the generalized reusability of the codebase.)*
+
