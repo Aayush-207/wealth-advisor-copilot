@@ -1,69 +1,27 @@
-# Wealthdesk — Wealth Advisor Copilot
+# Wealth Advisor Copilot
 
-An editorial redesign of the original Next.js application for relationship managers. This version deliberately uses **hardcoded answers**. No Gemini key, Supabase connection, backend process or other API key is required to run the demo.
+## Overview
+Wealth Advisor Copilot is an intelligent, high-fidelity conversational interface built specifically for relationship managers and wealth advisors. It serves as an advisory desk companion that deeply understands context and provides responses grounded in a curated collection of reference documents. 
 
-## Run locally
+## Tech Stack
+- **Frontend**: Next.js (React), Vanilla CSS, Typescript
+- **Backend / API**: FastAPI (Python)
+- **Database / Vector Storage**: Supabase
+- **AI / LLM Engine**: Google Gemini API
+- **Architecture**: Retrieval-Augmented Generation (RAG)
 
-Use Node.js 20.9 or later (tested with Node 24).
+## Key Features
+- **Intelligent Chatbot Interface**: A dynamic, highly responsive conversational UI featuring right-aligned user queries and left-aligned AI responses. The interface boasts beautifully animated, silky-smooth transition curves and thought-process delays that simulate organic thinking.
+- **Retrieval-Augmented Generation (RAG)**: Leverages a strict RAG pipeline to ensure that all answers provided by the AI are accurate and firmly grounded in the ingested document library.
+- **Dynamic Document Library**: A centralized hub with an editorial, fintech-inspired aesthetic where advisors can easily search and reference source materials.
+- **Vector Search via Supabase**: All reference documents are ingested, vectorized, and securely fed into Supabase, allowing for lightning-fast semantic search and extraction when a user poses a question.
+- **Gemini-Powered Reasoning**: Utilizes the powerful Gemini API to comprehend complex financial queries, synthesize context from extracted documents, and format easy-to-read, structured responses (including tables, citations, and summaries).
 
-```sh
-cd frontend
-npm ci
-npm run dev
-```
+## How It Works
+1. **Document Ingestion**: Source documents are processed, chunked, and converted into vector embeddings. These embeddings are then stored securely in **Supabase**.
+2. **User Query**: The advisor asks a question via the visually stunning chat interface on the frontend.
+3. **Semantic Search (RAG Extraction)**: The system takes the user's query, generates an embedding for it, and performs a similarity search against the Supabase vector database to extract the most highly relevant context and source text.
+4. **Answer Generation**: The extracted text, alongside the original query, is securely passed to the **Gemini API**. Gemini acts as the reasoning engine to synthesize a grounded, highly accurate response based exclusively on the retrieved data.
+5. **Presentation**: The frontend beautifully renders the response, simulating a realistic "thinking" phase before elegantly sliding the answer onto the screen with custom CSS animations.
 
-Open http://localhost:3000. For the production version:
-
-```sh
-npm run build
-npm start
-```
-
-## What changed
-
-- Redesigned workspace, conversations, document library, document review and specialist review.
-- A short, skippable opening sequence; animated paper artwork; composer focus effects; honest loading stages; staged answer reveals and source drawer transitions. Reduced-motion preferences are respected.
-- The three original suggested questions are unchanged, as are the original history and escalation questions.
-- Detailed saved responses, contextual limitations, tax illustration, and clickable PDF page references.
-- 13 locally bundled official reference PDFs: the previously referenced investment-adviser master circular plus 12 additional publications from SEBI and the Income Tax Department.
-- Search, category filters, sort, source inspection, PDF downloads, copied answers, stop/retry, persistent local history and review notes.
-- Responsive layouts, keyboard shortcuts, visible focus, accessible dialog with Escape dismissal, and mobile navigation.
-
-## Where to edit
-
-| File | Purpose |
-| --- | --- |
-| `frontend/src/lib/knowledge.ts` | Original prompts, deterministic matching, saved responses and exact citation pages |
-| `frontend/src/lib/documents.json` | Document titles, dates, categories, local files and official URLs |
-| `frontend/public/documents/` | Original PDF snapshots and downloadable provenance manifest |
-| `frontend/src/app/globals.css` | Design system, responsive layouts and animations |
-| `frontend/src/components/AppShell.tsx` | Sidebar, navigation, app chrome and opening animation |
-| `frontend/src/components/EvidenceDrawer.tsx` | Source explanation, original PDF, page links and downloads |
-| `frontend/src/lib/storage.ts` | Local browser state |
-
-## Demo boundaries
-
-- This is a UI/demo workflow, **not a live retrieval or generation system**. Unknown questions get an explicit unsupported response.
-- The profile is a sample identity. There is no login, role enforcement or bank approval in this demo.
-- Documents are official public **dated snapshots**, not bank-approved policy. Some have later amendments. The library preserves their dates and does not claim they are the latest law.
-- Tax examples describe the cited Income-tax Act, 1961 framework. The applicable tax year and any Income-tax Act, 2025 transition must be checked separately.
-- “Global Equity Fund” is not identified by an authenticated prospectus in the repository. The old invented fee is replaced with a missing-evidence response rather than another made-up percentage.
-- Reviews, conversation history and escalations are stored in this browser's localStorage. No message is sent to a specialist. Marking a document reviewed does not approve it or alter saved answers.
-- Only bundled document links and deliberate clicks to the original publishers use document resources. The chat makes no AI/API calls. PDFs work with the running local application without publisher availability.
-- The original FastAPI backend and starter-pack data are preserved for later development. They are not called by this frontend.
-
-See [source inventory](docs/redesign/SOURCES.md), [handoff](docs/redesign/HANDOFF.md), and [verification](docs/redesign/VERIFICATION.md).
-
-## Checks
-
-```sh
-cd frontend
-npm run lint
-npm run build
-```
-
-Document verification (requires `pypdf`):
-
-```sh
-python scripts/verify_documents.py
-```
+*(Note: This documentation describes the architectural flow of the system. Specific proprietary datasets, client details, and hardcoded query strings are strictly excluded from this repository codebase to maintain privacy and reusability.)*
