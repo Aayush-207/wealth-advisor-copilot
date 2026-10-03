@@ -249,8 +249,8 @@ export default function Home() {
       const id = crypto.randomUUID();
       setTurns((prev) => [...prev, { id, query, response: null }]);
       timers.current.push(
-        setTimeout(() => setPhase(1), 550),
-        setTimeout(() => setPhase(2), 1150),
+        setTimeout(() => setPhase(1), 1500),
+        setTimeout(() => setPhase(2), 3000),
         setTimeout(() => {
           const response = matchResponse(query);
           setTurns((prev) =>
@@ -276,7 +276,7 @@ export default function Home() {
             setLocalNotice(
               "Browser storage is unavailable. This conversation will not be saved.",
             );
-        }, 1850),
+        }, 4500),
       );
     },
     [clearTimers],

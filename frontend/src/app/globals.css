@@ -21,6 +21,9 @@ html {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
+.chat-transition {
+  animation: slide-up-fade 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
 body {
   margin: 0;
   background: var(--paper);
@@ -1618,7 +1621,7 @@ em {
   overflow: hidden;
   max-width: 95%;
   margin-right: auto;
-  animation: slide-up-fade 0.5s ease-out forwards;
+  animation: slide-up-fade 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 .answer-top {
   padding: 16px 24px;
@@ -1879,7 +1882,7 @@ em {
   min-height: 150px;
   max-width: 95%;
   margin-right: auto;
-  animation: slide-up-fade 0.5s ease-out forwards;
+  animation: slide-up-fade 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 .thinking-mark {
   width: 40px;
