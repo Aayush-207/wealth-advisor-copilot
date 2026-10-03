@@ -359,153 +359,44 @@ export default function Home() {
   return (
     <div className={`workspace ${turns.length ? "has-conversation" : ""}`}>
       {!turns.length ? (
-        <>
-          <div className="welcome-line">
-            <span className="eyebrow">
-              <span className="tiny-diamond" />
-              YOUR ADVISORY DESK
-            </span>
-            <span className="edition">CLARITY, WITH CONTEXT. / 01</span>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "80vh", textAlign: "center", padding: "0 20px" }}>
+          <div style={{ marginBottom: "2rem", color: "#6356a4" }}>
+            <Mark />
           </div>
-          <section className="hero">
-            <div className="hero-copy">
-              <div className="greeting">Good to have you here, Sarah.</div>
-              <h1>
-                Confidence begins
-                <br />
-                with <em>clarity.</em>
-              </h1>
-              <p>
-                A considered answer. A traceable source.
-                <br />
-                Your next client conversation, better informed.
-              </p>
-              <div style={{ margin: "2rem 0" }}>
-                <Composer
-                  input={input}
-                  setInput={setInput}
-                  textarea={textarea}
-                  submit={submit}
-                  loading={loading}
-                  stop={stop}
-                />
-              </div>
-              <div className="hero-detail">
-                <span className="stacked-docs">
-                  <Icon name="file" size={15} />
-                </span>
-                <span>
-                  <b>{documents.length} official references</b>
-                  <span className="separator">/</span>One thoughtful workspace
-                </span>
-              </div>
-            </div>
-            <KnowledgeArtwork />
-          </section>
-          <div className="workspace-grid">
-            <section className="ask-section">
-              <div className="section-label">
-                <span>WHAT’S ON YOUR MIND?</span>
-                <span>01 — ASK</span>
-              </div>
-              <div className="suggestion-heading">
-                <span>A few places to begin</span>
-                <span>YOUR ORIGINAL QUESTIONS</span>
-              </div>
-              <div className="prompt-list">
-                {prompts.map((p, i) => (
-                  <button
-                    key={p.title}
-                    className="prompt-row"
-                    onClick={() => submit(p.text)}
-                  >
-                    <span className="prompt-number">0{i + 1}</span>
-                    <span>
-                      <small>{p.tag}</small>
-                      <b>{p.text}</b>
-                    </span>
-                    <span className="prompt-arrow">
-                      <Icon name="arrow" size={18} />
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </section>
-            <aside className="reference-panel">
-              <div className="section-label">
-                <span>THE REFERENCE DESK</span>
-                <Icon name="book" size={17} />
-              </div>
-              <h2>
-                Less searching.
-                <br />
-                <em>More perspective.</em>
-              </h2>
-              <p>Explore the materials behind the conversation.</p>
-              <div className="reference-links">
-                {[
-                  {
-                    id: "capital-gains-guide",
-                    tag: "TAXATION",
-                    name: "Understanding capital gains",
-                  },
-                  {
-                    id: "investment-advisers-2026",
-                    tag: "ADVISORY",
-                    name: "Investment adviser standards",
-                  },
-                  {
-                    id: "aml-2024",
-                    tag: "COMPLIANCE",
-                    name: "Know who’s behind the trust",
-                  },
-                ].map((x) => (
-                  <button
-                    key={x.id}
-                    onClick={() =>
-                      setCitation({
-                        documentId: x.id,
-                        page: 1,
-                        section: "Document overview",
-                        summary: documents.find((d) => d.id === x.id)!.summary,
-                      })
-                    }
-                  >
-                    <span className="ref-icon">
-                      <Icon name="file" size={18} />
-                    </span>
-                    <span>
-                      <small>{x.tag}</small>
-                      <b>{x.name}</b>
-                    </span>
-                    <Icon name="chevron" size={14} />
-                  </button>
-                ))}
-              </div>
-              <Link href="/documents" className="library-link">
-                Visit the document library <Icon name="arrow" size={17} />
-              </Link>
-              <span className="reference-note">
-                <span />
-                Public references. Bank review pending.
-              </span>
-            </aside>
+          <h1 style={{ fontFamily: "var(--serif)", fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 400, letterSpacing: "-1.5px", marginBottom: "1rem" }}>
+            What can I help you clarify?
+          </h1>
+          <p style={{ color: "#7c7d83", marginBottom: "3rem", fontSize: "14px" }}>
+            Explore considered answers backed by official bank references.
+          </p>
+          <div style={{ width: "100%", maxWidth: "700px", marginBottom: "2rem" }}>
+            <Composer
+              input={input}
+              setInput={setInput}
+              textarea={textarea}
+              submit={submit}
+              loading={loading}
+              stop={stop}
+            />
           </div>
-          <div className="principles">
-            <div>
-              <Icon name="book" size={17} />
-              <span>Sources you can open</span>
-            </div>
-            <div>
-              <Icon name="shield" size={17} />
-              <span>Clear about what’s missing</span>
-            </div>
-            <div>
-              <Icon name="clock" size={17} />
-              <span>Context before conclusions</span>
-            </div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", justifyContent: "center", maxWidth: "800px" }}>
+            {prompts.map((p) => (
+              <button
+                key={p.title}
+                onClick={() => submit(p.text)}
+                style={{
+                  background: "transparent", border: "1px solid #dcd7e6", borderRadius: "20px",
+                  padding: "8px 16px", fontSize: "12px", color: "#656874",
+                  cursor: "pointer", transition: "all 0.2s"
+                }}
+                onMouseOver={(e) => { e.currentTarget.style.borderColor = "#a898c5"; e.currentTarget.style.background = "#fff"; }}
+                onMouseOut={(e) => { e.currentTarget.style.borderColor = "#dcd7e6"; e.currentTarget.style.background = "transparent"; }}
+              >
+                {p.title}
+              </button>
+            ))}
           </div>
-        </>
+        </div>
       ) : (
         <>
           <div className="conversation-header">
