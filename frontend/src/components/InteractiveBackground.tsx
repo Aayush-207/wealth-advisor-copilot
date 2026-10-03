@@ -36,6 +36,10 @@ export default function InteractiveBackground() {
           66% { transform: translate(-5vw, -15vh) scale(1.2); }
           100% { transform: translate(0, 0) scale(1); }
         }
+        @keyframes endless-ripple {
+          from { background-position: 0px 0px; }
+          to { background-position: 120px 120px; }
+        }
       `}} />
       <div className="fixed inset-0 z-[-1] pointer-events-none overflow-hidden bg-[#f8f7f3]">
         
@@ -67,12 +71,13 @@ export default function InteractiveBackground() {
 
         {/* Sweeping Curvy Lines Pattern */}
         <div 
-          className="absolute inset-0 opacity-[0.5] mix-blend-multiply transition-transform duration-700 ease-out z-0"
+          className="absolute w-[120%] h-[120%] -left-[10%] -top-[10%] opacity-[0.5] mix-blend-multiply transition-transform duration-700 ease-out z-0"
           style={{ 
             backgroundImage: `
               repeating-radial-gradient(circle at 0% 0%, transparent 0, transparent 40px, rgba(99, 86, 164, 0.15) 40px, rgba(99, 86, 164, 0.15) 41px),
               repeating-radial-gradient(circle at 100% 100%, transparent 0, transparent 60px, rgba(99, 86, 164, 0.1) 60px, rgba(99, 86, 164, 0.1) 61px)
             `,
+            animation: 'endless-ripple 12s linear infinite',
             transform: `translate(${mousePosition.x * -20}px, ${mousePosition.y * -20}px)`
           }}
         />
