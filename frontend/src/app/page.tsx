@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Icon, { Mark } from "@/components/Icon";
 import EvidenceDrawer from "@/components/EvidenceDrawer";
+import InteractiveBackground from "@/components/InteractiveBackground";
 import {
   documents,
   prompts,
@@ -359,8 +360,10 @@ export default function Home() {
   return (
     <div className={`workspace ${turns.length ? "has-conversation" : ""}`}>
       {!turns.length ? (
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "80vh", textAlign: "center", padding: "0 20px" }}>
-          <div style={{ marginBottom: "2rem", color: "#6356a4" }}>
+        <>
+          <InteractiveBackground />
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "80vh", textAlign: "center", padding: "0 20px" }}>
+            <div style={{ marginBottom: "2rem", color: "#6356a4", position: "relative" }}>
             <Mark />
           </div>
           <h1 style={{ fontFamily: "var(--serif)", fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 400, letterSpacing: "-1.5px", marginBottom: "1rem" }}>
@@ -414,8 +417,9 @@ export default function Home() {
                 </button>
               );
             })}
+            </div>
           </div>
-        </div>
+        </>
       ) : (
         <>
           <div className="conversation-header">
