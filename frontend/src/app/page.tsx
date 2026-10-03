@@ -370,9 +370,8 @@ export default function Home() {
             What can I help you clarify?
           </h1>
           <p style={{ color: "#7c7d83", marginBottom: "3rem", fontSize: "14px" }}>
-            Explore considered answers backed by official bank references.
           </p>
-          <div style={{ width: "100%", maxWidth: "700px", marginBottom: "2rem" }}>
+          <div style={{ width: "100%", maxWidth: "700px", zIndex: 10 }}>
             <Composer
               input={input}
               setInput={setInput}
@@ -382,43 +381,35 @@ export default function Home() {
               stop={stop}
             />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-[900px] mt-6 px-4">
-            {prompts.map((p, i) => {
-              const gradients = [
-                "from-blue-500/10 to-purple-500/10 border-blue-200/50 hover:border-blue-400/50",
-                "from-emerald-500/10 to-teal-500/10 border-emerald-200/50 hover:border-emerald-400/50",
-                "from-amber-500/10 to-orange-500/10 border-amber-200/50 hover:border-amber-400/50"
-              ];
-              const textColors = [
-                "text-blue-700",
-                "text-emerald-700",
-                "text-amber-700"
-              ];
-              const icons = ["file", "shield", "book"];
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-[900px] mt-4 px-4 z-10">
+            {prompts.map((p) => {
               return (
                 <button
                   key={p.title}
                   onClick={() => submit(p.text)}
-                  className={`group relative flex flex-col items-start p-6 rounded-2xl bg-gradient-to-br ${gradients[i % gradients.length]} border bg-white/50 backdrop-blur-sm transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-1 text-left w-full h-full overflow-hidden`}
+                  className="group relative flex flex-col items-start p-6 rounded-xl bg-transparent border border-[#dcd7e6] overflow-hidden text-left w-full h-full"
                 >
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-white/60 rounded-full blur-2xl -mr-12 -mt-12 group-hover:scale-150 transition-transform duration-700 z-0"></div>
-                  <div className={`relative z-10 w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center mb-4 ${textColors[i % textColors.length]}`}>
-                    <Icon name={icons[i % icons.length] as any} size={18} />
-                  </div>
-                  <span className={`relative z-10 text-[10px] font-bold uppercase tracking-widest mb-3 ${textColors[i % textColors.length]}`}>
+                  <div className="absolute inset-0 bg-[#6356a4] translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] z-0"></div>
+                  
+                  <span className="relative z-10 text-[10px] font-bold uppercase tracking-widest mb-3 text-[#656874] group-hover:text-white/80 transition-colors duration-300">
                     {p.title}
                   </span>
-                  <span className="relative z-10 text-sm text-gray-800 font-medium leading-relaxed">
+                  
+                  <span className="relative z-10 text-[13px] text-[#262c3b] font-medium leading-relaxed group-hover:text-white transition-colors duration-300">
                     "{p.text}"
                   </span>
-                  <div className="relative z-10 mt-6 flex items-center gap-2 text-[10px] text-gray-500 font-bold uppercase tracking-widest group-hover:text-gray-900 transition-colors">
-                    Ask this <Icon name="arrow" size={12} />
+                  
+                  <div className="relative z-10 mt-6 flex items-center gap-2 text-[10px] text-[#6356a4] font-bold uppercase tracking-widest group-hover:text-white transition-colors duration-300">
+                    <span className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500 ease-out">Ask this</span>
+                    <div className="transform group-hover:translate-x-1 transition-transform duration-500">
+                      <Icon name="arrow" size={12} />
+                    </div>
                   </div>
                 </button>
               );
             })}
-            </div>
           </div>
+        </div>
         </>
       ) : (
         <>
