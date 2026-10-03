@@ -7,6 +7,31 @@ This repository houses the complete source code for the platform, which marries 
 
 ---
 
+## The Problem: The Status Quo in Wealth Management
+In traditional wealth management, relationship managers and financial advisors spend a massive percentage of their day manually digging through dense, fragmented data repositories. When a client asks a highly specific question (e.g., "What are the tax implications of shifting my portfolio to municipal bonds under the new guidelines?"), advisors must:
+1. Log into multiple clunky, outdated intranet portals or shared drives.
+2. Manually search through hundreds of 50+ page PDF reports, governance docs, and tax manuals.
+3. Read through the documents to find the exact clause.
+4. Synthesize that fragmented information into a cohesive answer for the client.
+
+This process is slow, error-prone, and pulls advisors away from their primary role: building relationships. Current legacy systems rely on basic keyword search, meaning if the advisor doesn't use the exact terminology, they risk missing critical compliance or financial information.
+
+## The Solution: Wealth Advisor Copilot
+The Wealth Advisor Copilot completely flips this paradigm. Instead of the advisor searching for the needle in the haystack, the Copilot finds the needle, understands the context, and presents a synthesized answer on a silver platter.
+
+By combining strict Retrieval-Augmented Generation (RAG) with the advanced reasoning capabilities of Google's Gemini API, the Copilot transforms a static document library into an active, intelligent partner.
+
+### Who Uses It?
+- **Relationship Managers**: To instantly answer client questions accurately during live meetings or phone calls.
+- **Wealth Advisors**: To research complex financial strategies and ensure their advice perfectly aligns with the latest internal governance and tax documents.
+- **Financial Analysts & Compliance Officers**: To rapidly extract data points from extensive market reports or review escalated queries.
+
+### How & Where Is It Used?
+- **Where**: Deployed as an internal web-based platform securely within the financial institution's intranet, often kept open on an advisor's secondary monitor.
+- **How**: An advisor types a natural language question into the Copilot's chat interface. Within seconds, the Copilot searches thousands of ingested documents in Supabase, extracts the exact relevant clauses, and uses Gemini to generate a fully synthesized, highly accurate answer. Crucially, the answer includes clickable citations pointing directly back to the source material so the advisor can verify the data instantly.
+
+---
+
 ## Technical Stack & Architecture
 
 ### 1. Frontend: Next.js (React) & Vanilla CSS
