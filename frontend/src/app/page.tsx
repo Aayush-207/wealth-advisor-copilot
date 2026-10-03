@@ -379,22 +379,41 @@ export default function Home() {
               stop={stop}
             />
           </div>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", justifyContent: "center", maxWidth: "800px" }}>
-            {prompts.map((p) => (
-              <button
-                key={p.title}
-                onClick={() => submit(p.text)}
-                style={{
-                  background: "transparent", border: "1px solid #dcd7e6", borderRadius: "20px",
-                  padding: "8px 16px", fontSize: "12px", color: "#656874",
-                  cursor: "pointer", transition: "all 0.2s"
-                }}
-                onMouseOver={(e) => { e.currentTarget.style.borderColor = "#a898c5"; e.currentTarget.style.background = "#fff"; }}
-                onMouseOut={(e) => { e.currentTarget.style.borderColor = "#dcd7e6"; e.currentTarget.style.background = "transparent"; }}
-              >
-                {p.title}
-              </button>
-            ))}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-[900px] mt-6 px-4">
+            {prompts.map((p, i) => {
+              const gradients = [
+                "from-blue-500/10 to-purple-500/10 border-blue-200/50 hover:border-blue-400/50",
+                "from-emerald-500/10 to-teal-500/10 border-emerald-200/50 hover:border-emerald-400/50",
+                "from-amber-500/10 to-orange-500/10 border-amber-200/50 hover:border-amber-400/50"
+              ];
+              const textColors = [
+                "text-blue-700",
+                "text-emerald-700",
+                "text-amber-700"
+              ];
+              const icons = ["file", "shield", "book"];
+              return (
+                <button
+                  key={p.title}
+                  onClick={() => submit(p.text)}
+                  className={`group relative flex flex-col items-start p-6 rounded-2xl bg-gradient-to-br ${gradients[i % gradients.length]} border bg-white/50 backdrop-blur-sm transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-1 text-left w-full h-full overflow-hidden`}
+                >
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-white/60 rounded-full blur-2xl -mr-12 -mt-12 group-hover:scale-150 transition-transform duration-700 z-0"></div>
+                  <div className={`relative z-10 w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center mb-4 ${textColors[i % textColors.length]}`}>
+                    <Icon name={icons[i % icons.length] as any} size={18} />
+                  </div>
+                  <span className={`relative z-10 text-[10px] font-bold uppercase tracking-widest mb-3 ${textColors[i % textColors.length]}`}>
+                    {p.title}
+                  </span>
+                  <span className="relative z-10 text-sm text-gray-800 font-medium leading-relaxed">
+                    "{p.text}"
+                  </span>
+                  <div className="relative z-10 mt-6 flex items-center gap-2 text-[10px] text-gray-500 font-bold uppercase tracking-widest group-hover:text-gray-900 transition-colors">
+                    Ask this <Icon name="arrow" size={12} />
+                  </div>
+                </button>
+              );
+            })}
           </div>
         </div>
       ) : (
