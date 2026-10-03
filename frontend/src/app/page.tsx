@@ -387,21 +387,19 @@ export default function Home() {
                 <button
                   key={p.title}
                   onClick={() => submit(p.text)}
-                  className="group relative flex flex-col items-start p-6 rounded-xl bg-transparent border border-[#dcd7e6] overflow-hidden text-left w-full h-full"
+                  className="group relative flex flex-col items-start p-6 rounded-2xl bg-white/70 backdrop-blur-md border border-[#dcd7e6] text-left w-full h-full transition-all duration-400 hover:scale-[1.02] hover:border-[#6356a4] hover:shadow-[0_12px_40px_-12px_rgba(99,86,164,0.3)]"
                 >
-                  <div className="absolute inset-0 bg-[#6356a4] translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] z-0"></div>
-                  
-                  <span className="relative z-10 text-[10px] font-bold uppercase tracking-widest mb-3 text-[#656874] group-hover:text-white/80 transition-colors duration-300">
+                  <span className="text-[10px] font-bold uppercase tracking-widest mb-3 text-[#656874] group-hover:text-[#6356a4] transition-colors duration-300">
                     {p.title}
                   </span>
                   
-                  <span className="relative z-10 text-[13px] text-[#262c3b] font-medium leading-relaxed group-hover:text-white transition-colors duration-300">
+                  <span className="text-[13px] text-[#262c3b] font-medium leading-relaxed">
                     "{p.text}"
                   </span>
                   
-                  <div className="relative z-10 mt-6 flex items-center gap-2 text-[10px] text-[#6356a4] font-bold uppercase tracking-widest group-hover:text-white transition-colors duration-300">
-                    <span className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500 ease-out">Ask this</span>
-                    <div className="transform group-hover:translate-x-1 transition-transform duration-500">
+                  <div className="mt-6 flex items-center gap-2 text-[10px] text-[#6356a4] font-bold uppercase tracking-widest opacity-60 group-hover:opacity-100 transition-all duration-300">
+                    <span>Ask this</span>
+                    <div className="transform group-hover:translate-x-1.5 transition-transform duration-300">
                       <Icon name="arrow" size={12} />
                     </div>
                   </div>
