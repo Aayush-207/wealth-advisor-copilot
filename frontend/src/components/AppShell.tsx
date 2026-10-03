@@ -178,22 +178,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         </div>
       </aside>
       <div className="app-frame" inert={intro || (mobile && open)}>
-        <header className="topbar">
-          <div className="breadcrumb">
-            Workspace
-            <Icon name="chevron" size={13} />
-            <span>
-              {nav.find((n) => n.href === path)?.label || "Wealthdesk"}
-            </span>
-          </div>
-          <div className="topbar-right">
-            <span className="offline-pill">
-              <span />
-              Saved responses
-            </span>
-            <span className="top-avatar">SW</span>
-          </div>
-        </header>
+
         <main id="main" className="page-frame" key={path}>
           {children}
         </main>
