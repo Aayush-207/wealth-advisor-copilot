@@ -180,9 +180,15 @@ export default function Library() {
         </div>
       ) : (
         <div className="empty-state">
-          <Icon name="search" size={35} />
-          <h2>No documents found.</h2>
-          <p>Try a broader term or another category.</p>
+          <div className="empty-state-icon" style={{ opacity: 0.6, marginBottom: '16px' }}>
+            <Icon name="search" size={45} />
+          </div>
+          <h2 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--ink)', marginBottom: '8px' }}>
+            No documents found.
+          </h2>
+          <p style={{ color: 'var(--muted)', fontSize: '14px', marginBottom: '24px' }}>
+            Try a broader term or another category.
+          </p>
           <button
             className="secondary-button"
             onClick={() => {

@@ -101,6 +101,8 @@ export default function Admin() {
                 </span>
                 <button
                   className="secondary-button"
+                  aria-expanded={selected === d.id}
+                  aria-controls={`review-editor-${d.id}`}
                   onClick={() => {
                     setSelected(selected === d.id ? null : d.id);
                     setNote(reviews[d.id]?.note || "");
@@ -112,7 +114,7 @@ export default function Admin() {
                 </button>
               </div>
               {selected === d.id && (
-                <div className="review-editor">
+                <div className="review-editor" id={`review-editor-${d.id}`} role="region" aria-label="Review editor">
                   <button
                     className="text-button"
                     onClick={() =>
@@ -166,8 +168,15 @@ export default function Admin() {
           filter === "All" || (reviews[d.id]?.status || "Pending") === filter,
       ) && (
         <div className="empty-state">
-          <Icon name="shield" size={30} />
-          <h2>No documents in this review state.</h2>
+          <div className="empty-state-icon" style={{ opacity: 0.6, marginBottom: '16px' }}>
+            <Icon name="shield" size={40} />
+          </div>
+          <h2 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--ink)', marginBottom: '8px' }}>
+            No documents in this state.
+          </h2>
+          <p style={{ color: 'var(--muted)', fontSize: '14px' }}>
+            There are no documents matching the "{filter}" filter.
+          </p>
         </div>
       )}
       <EvidenceDrawer
